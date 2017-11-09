@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.3
+
+ - Compatibility with Node v6
+
 ## v0.2.2
 
  - Fix a bug in environment detection

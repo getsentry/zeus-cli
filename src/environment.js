@@ -13,7 +13,7 @@ function getEnvironment() {
   const environments = requireDir('environments');
   logger.debug(`Found environments: ${Object.keys(environments)}`);
 
-  const environment = Object.values(environments).find(env => env);
+  const environment = Object.keys(environments).find(key => environments[key]);
   if (!environment) {
     logger.error('No supported CI system detected');
     process.exit(1);
