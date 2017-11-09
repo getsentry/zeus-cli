@@ -3,7 +3,7 @@
     <h1>Zeus CLI</h1>
 </div>
 
-This is the command line utility for [Zeus](https://github.com/getsentry/zeus).
+The command line utility for [Zeus](https://github.com/getsentry/zeus).
 
 ## Installation
 
