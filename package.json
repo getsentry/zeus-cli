@@ -1,0 +1,24 @@
+{
+  "name": "zeus-ci",
+  "version": "0.1.2",
+  "description": "CLI for https://zeus.ci",
+  "main": "src/index.js",
+  "repository": "https://github.com/getsentry/zeus-cli",
+  "license": "Apache-2.0",
+  "bin": "src/index.js",
+  "scripts": {
+    "lint": "eslint src",
+    "start": "node src"
+  },
+  "dependencies": {
+    "request": "^2.83.0",
+    "require-dir": "^0.3.2",
+    "yargs": "^10.0.3"
+  },
+  "devDependencies": {
+    "eslint": "^4.10.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-config-prettier": "^2.7.0",
+    "eslint-plugin-import": "^2.8.0"
+  }
+}
