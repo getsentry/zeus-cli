@@ -6,6 +6,12 @@
 
 The official command line utility for [Zeus](https://github.com/getsentry/zeus).
 
+## Table of Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Upload](#upload)
+
 ## Installation
 
 The CLI comes as NPM package and can be installed via npm or yarn:
