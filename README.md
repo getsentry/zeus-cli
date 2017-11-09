@@ -37,17 +37,16 @@ Options:
 
 ### Upload
 
-This uploads build artifacts to Zeus for processing or storage.
-
+This uploads a build artifact for processing or storage.
 
 ```
-zeus-ci upload <file> [type]
+zeus-ci upload <file>
 
 Positionals:
   file  Path to the artifact                                 [string] [required]
-  type  Mime type of the file to upload                                 [string]
 
 Options:
+  -t, --type     Mime type of the file to upload                        [string]
   -v, --version  Show version number                                   [boolean]
   -h, --help     Show help                                             [boolean]
 ```

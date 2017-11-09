@@ -4,7 +4,7 @@ const request = require('request');
 const logger = require('../logger');
 
 module.exports = {
-  command: ['upload <file> [type]', 'u'],
+  command: ['upload <file>', 'u'],
   description: 'Upload a build artifact',
 
   builder: yargs =>
@@ -13,9 +13,10 @@ module.exports = {
         description: 'Path to the artifact',
         type: 'string'
       })
-      .positional('type', {
+      .option('t', {
         description: 'Mime type of the file to upload',
-        type: 'string'
+        type: 'string',
+        alias: 'type'
       }),
 
   handler: argv => {
