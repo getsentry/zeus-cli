@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/1433023/32624723-f1c8ec84-c53e-11e7-9e78-e5a6369176c3.png">
+    <img src="https://user-images.githubusercontent.com/1433023/32629198-3c6f225e-c54d-11e7-96db-99fd22709a1b.png" width="271">
 </p>
 
 <h1>Zeus Command Line Interface</h1>
