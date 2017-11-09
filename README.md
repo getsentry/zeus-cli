@@ -1,9 +1,10 @@
-<div align="center">
+<p align="center">
     <img src="https://user-images.githubusercontent.com/1433023/32624723-f1c8ec84-c53e-11e7-9e78-e5a6369176c3.png">
-    <h1>Zeus CLI</h1>
-</div>
+</p>
 
-The command line utility for [Zeus](https://github.com/getsentry/zeus).
+<h1>Zeus Command Line Interface</h1>
+
+The official command line utility for [Zeus](https://github.com/getsentry/zeus).
 
 ## Installation
 
