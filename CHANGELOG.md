@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.2
+
+ - Fix a bug in environment detection
+
 ## v0.2.1
 
  - Fix command line execution on Linux
