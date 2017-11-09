@@ -2,13 +2,14 @@ const requireDir = require('require-dir');
 const logger = require('./logger');
 
 function getEnvironment() {
+  logger.debug('Initializing CI environment');
+
   const hookBase = process.env.HOOK_BASE;
   if (!hookBase) {
     logger.error('Missing ZEUS_HOOK_BASE environment variable');
     process.exit(1);
   }
 
-  logger.debug('Initializing CI environment');
   const environments = requireDir('environments');
   logger.debug(`Found environments: ${Object.keys(environments)}`);
 
