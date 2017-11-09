@@ -34,6 +34,8 @@ This uploads build artifacts to Zeus for processing or storage.
 
 
 ```
+zeus-ci upload <file> [type]
+
 Positionals:
   file  Path to the artifact                                 [string] [required]
   type  Mime type of the file to upload                                 [string]
