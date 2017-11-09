@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.1
+
+ - Fix command line execution on Linux
+
 ## v0.2.0
 
  - **Breaking**: Makes the `type` flag an option instead of parameter
