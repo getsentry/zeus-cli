@@ -1,6 +1,7 @@
-const { createReadStream } = require('fs');
+const { createReadStream, existsSync } = require('fs');
 const { basename } = require('path');
 const request = require('request');
+const logger = require('../logger');
 
 module.exports = {
   command: ['upload <file> [type]', 'u'],
@@ -19,7 +20,18 @@ module.exports = {
 
   handler: argv => {
     const env = require('../environment'); // eslint-disable-line global-require
+
+    if (!existsSync(argv.file)) {
+      logger.error(`File does not exist: ${argv.file}`);
+      process.exit(1);
+    }
+
+    logger.debug(`Artifact found at ${argv.file}`);
+
     const url = `${env.HOOK_BASE}/builds/${env.BUILD_ID}/jobs/${env.JOB_ID}/artifacts`;
+    logger.debug(`Requesting build artifacts for job ${env.JOB_ID}`);
+    logger.debug(`Request URL: ${url}`);
+
     const formData = {
       type: argv.type,
       file: {
@@ -32,11 +44,11 @@ module.exports = {
 
     request.post({ url, formData }, err => {
       if (err) {
-        console.error('Artifact upload failed: ', err);
+        logger.error('Artifact upload failed: ', err);
         process.exit(1);
       }
 
-      console.log('Artifact upload completed');
+      logger.info('Artifact upload completed');
     });
   }
 };

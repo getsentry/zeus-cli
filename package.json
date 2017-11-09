@@ -13,6 +13,7 @@
   "dependencies": {
     "request": "^2.83.0",
     "require-dir": "^0.3.2",
+    "winston": "^2.4.0",
     "yargs": "^10.0.3"
   },
   "devDependencies": {
