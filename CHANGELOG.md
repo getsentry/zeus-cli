@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.4
+
+ - Fix a regression in environment detection
+
 ## v0.2.3
 
  - Compatibility with Node v6
