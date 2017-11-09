@@ -3,4 +3,7 @@
 require('yargs')
   .commandDir('commands')
   .demandCommand()
-  .help().argv;
+  .version()
+  .alias('v', 'version')
+  .help()
+  .alias('h', 'help').argv;
