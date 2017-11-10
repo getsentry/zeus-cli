@@ -1,5 +1,3 @@
 {
-  "eslint.autoFixOnSave": true,
-  "prettier.singleQuote": true,
-  "prettier.trailingComma": "es5"
+  "eslint.autoFixOnSave": true
 }
