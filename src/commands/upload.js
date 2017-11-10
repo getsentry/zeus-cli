@@ -11,12 +11,12 @@ module.exports = {
     yargs
       .positional('file', {
         description: 'Path to the artifact',
-        type: 'string'
+        type: 'string',
       })
       .option('t', {
         description: 'Mime type of the file to upload',
         type: 'string',
-        alias: 'type'
+        alias: 'type',
       }),
 
   handler: argv => {
@@ -29,7 +29,9 @@ module.exports = {
 
     logger.debug(`Artifact found at ${argv.file}`);
 
-    const url = `${env.HOOK_BASE}/builds/${env.BUILD_ID}/jobs/${env.JOB_ID}/artifacts`;
+    const url = `${env.HOOK_BASE}/builds/${env.BUILD_ID}/jobs/${
+      env.JOB_ID
+    }/artifacts`;
     logger.debug(`Requesting build artifacts for job ${env.JOB_ID}`);
     logger.debug(`Request URL: ${url}`);
 
@@ -38,9 +40,9 @@ module.exports = {
       file: {
         value: createReadStream(argv.file),
         options: {
-          filename: basename(argv.file)
-        }
-      }
+          filename: basename(argv.file),
+        },
+      },
     };
 
     request.post({ url, formData }, err => {
@@ -51,5 +53,5 @@ module.exports = {
 
       logger.info('Artifact upload completed');
     });
-  }
+  },
 };
