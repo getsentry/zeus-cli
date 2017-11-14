@@ -29,9 +29,8 @@ module.exports = {
 
     logger.debug(`Artifact found at ${argv.file}`);
 
-    const url = `${env.HOOK_BASE}/builds/${env.BUILD_ID}/jobs/${
-      env.JOB_ID
-    }/artifacts`;
+    const { HOOK_BASE, BUILD_ID, JOB_ID } = env;
+    const url = `${HOOK_BASE}/builds/${BUILD_ID}/jobs/${JOB_ID}/artifacts`;
     logger.debug(`Requesting build artifacts for job ${env.JOB_ID}`);
     logger.debug(`Request URL: ${url}`);
 
