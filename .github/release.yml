@@ -1,4 +1,5 @@
 store: zeus
 targets:
   - github
-  - npm
+  - name: npm
+    access: public
