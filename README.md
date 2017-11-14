@@ -4,6 +4,11 @@
 
 <h1>Zeus Command Line Interface</h1>
 
+[![Travis](https://img.shields.io/travis/getsentry/zeus-cli.svg)](https://travis-ci.org/getsentry/zeus-cli)
+[![GitHub release](https://img.shields.io/github/release/getsentry/zeus-cli.svg)](https://github.com/getsentry/zeus-cli/releases/latest)
+[![npm version](https://img.shields.io/npm/v/@zeus-ci/cli.svg)](https://www.npmjs.com/package/@zeus-ci/cli)
+[![license](https://img.shields.io/github/license/getsentry/zeus-cli.svg)](https://github.com/getsentry/zeus-cli/blob/master/LICENSE)
+
 The official command line utility for [Zeus](https://github.com/getsentry/zeus).
 
 ## Table of Contents
