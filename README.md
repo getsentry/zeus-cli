@@ -18,14 +18,14 @@ The CLI comes as NPM package and can be installed via npm or yarn:
 
 
 ```bash
-npm install -g zeus-ci
-yarn add -g zeus-ci
+npm install -g @zeus-ci/cli
+yarn add -g @zeus-ci/cli
 ```
 
 ## Usage
 
 ```
-zeus-ci <command>
+zeus <command>
 
 Commands:
   src upload <file> [type]  Upload a build artifact                 [aliases: u]
@@ -40,7 +40,7 @@ Options:
 This uploads a build artifact for processing or storage.
 
 ```
-zeus-ci upload <file>
+zeus upload <file>
 
 Positionals:
   file  Path to the artifact                                 [string] [required]
