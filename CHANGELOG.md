@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.3.0
+
+ - Rename package to `@zeus-ci/cli`
+ - Rename the command line utility to just `zeus`
+ - Deprecate the `zeus-ci` package
+
 ## v0.2.4
 
  - Fix a regression in environment detection
