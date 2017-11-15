@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.3.3
+
+ - Require Node 4.5.0 or later
+ - Remove heavy polyfill dependencies
+
 ## v0.3.2
 
  - Compatibility with NPM 2.x
