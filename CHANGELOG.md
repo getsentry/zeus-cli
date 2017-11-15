@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.1
+
+ - Compatibility with Node 0.12
+
 ## v0.3.0
 
  - Rename package to `@zeus-ci/cli`
