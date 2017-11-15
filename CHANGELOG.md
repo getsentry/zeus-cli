@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.2
+
+ - Compatibility with NPM 2.x
+
 ## v0.3.1
 
  - Compatibility with Node 0.12
