@@ -6,9 +6,10 @@
   "repository": "https://github.com/getsentry/zeus-cli",
   "license": "Apache-2.0",
   "bin": {
-    "zeus": "src/index.js"
+    "zeus": "lib/index.js"
   },
   "scripts": {
+    "build": "babel src -d lib",
     "fix:eslint": "eslint --fix src",
     "fix:prettier": "prettier --write 'src/**/*.js'",
     "fix": "npm-run-all fix:eslint fix:prettier",
@@ -18,12 +19,15 @@
     "test": "npm-run-all test:eslint test:prettier"
   },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "request": "^2.83.0",
     "require-dir": "^0.3.2",
     "winston": "^2.4.0",
     "yargs": "^10.0.3"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "eslint": "^4.10.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-config-prettier": "^2.7.0",

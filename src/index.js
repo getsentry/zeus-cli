@@ -1,6 +1,7 @@
 #!/usr/bin/env node
-/* eslint-disable no-unused-expressions */
+require('babel-polyfill');
 
+/* eslint-disable no-unused-expressions */
 require('yargs')
   .commandDir('commands')
   .demandCommand()
