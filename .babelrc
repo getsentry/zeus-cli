@@ -6,8 +6,7 @@
         "loose": true,
         "targets": {
           "node": "0.12"
-        },
-        "useBuiltIns": true
+        }
       }
     ]
   ]
