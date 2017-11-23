@@ -16,6 +16,7 @@ The official command line utility for [Zeus](https://github.com/getsentry/zeus).
 * [Installation](#installation)
 * [Usage](#usage)
   * [Upload](#upload)
+  * [Bash Completion](#bash-completion)
 
 ## Installation
 
@@ -32,7 +33,8 @@ yarn add -g @zeus-ci/cli
 zeus <command>
 
 Commands:
-  src upload <file> [type]  Upload a build artifact                 [aliases: u]
+  zeus upload <file>  Upload a build artifact                        [aliases: u]
+  zeus completion     generate bash completion script
 
 Options:
   -v, --version  Show version number                                   [boolean]
@@ -53,4 +55,16 @@ Options:
   -t, --type     Mime type of the file to upload                        [string]
   -v, --version  Show version number                                   [boolean]
   -h, --help     Show help                                             [boolean]
+```
+
+### Bash Completion
+
+Output a script to generate command line completion suggestions.
+
+```sh
+# Linux
+zeus completion >> ~/.bashrc
+
+# macOS
+zeus completion >> ~/.bash_profile
 ```

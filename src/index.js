@@ -7,4 +7,5 @@ require('yargs')
   .version()
   .alias('v', 'version')
   .help()
-  .alias('h', 'help').argv;
+  .alias('h', 'help')
+  .completion().argv;
