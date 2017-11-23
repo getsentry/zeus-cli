@@ -1,7 +1,6 @@
 const { createReadStream, existsSync } = require('fs');
-const { basename } = require('path');
-const request = require('request');
 const logger = require('../logger');
+const Zeus = require('../zeus');
 
 module.exports = {
   command: ['upload <file>', 'u'],
@@ -17,40 +16,37 @@ module.exports = {
         description: 'Mime type of the file to upload',
         type: 'string',
         alias: 'type',
+      })
+      .option('j', {
+        description: 'Unique id of the job in CI',
+        type: 'string',
+        alias: 'job',
+      })
+      .option('b', {
+        description: 'Unique id of the build in CI',
+        type: 'string',
+        alias: 'build',
       }),
 
-  handler: argv => {
-    const env = require('../environment'); // eslint-disable-line global-require
-
-    if (!existsSync(argv.file)) {
-      logger.error(`File does not exist: ${argv.file}`);
-      process.exit(1);
-    }
-
-    logger.debug(`Artifact found at ${argv.file}`);
-
-    const { HOOK_BASE, BUILD_ID, JOB_ID } = env;
-    const url = `${HOOK_BASE}/builds/${BUILD_ID}/jobs/${JOB_ID}/artifacts`;
-    logger.debug(`Requesting build artifacts for job ${env.JOB_ID}`);
-    logger.debug(`Request URL: ${url}`);
-
-    const formData = {
-      type: argv.type,
-      file: {
-        value: createReadStream(argv.file),
-        options: {
-          filename: basename(argv.file),
-        },
-      },
-    };
-
-    request.post({ url, formData }, err => {
-      if (err) {
-        logger.error('Artifact upload failed: ', err);
-        process.exit(1);
+  handler: async argv => {
+    try {
+      if (!existsSync(argv.file)) {
+        throw new Error(`File does not exist: ${argv.file}`);
       }
 
+      const zeus = new Zeus({ url: argv.url, token: argv.token });
+      const result = await zeus.uploadArtifact({
+        build: argv.build,
+        job: argv.job,
+        file: createReadStream(argv.file),
+        type: argv.type,
+      });
+
       logger.info('Artifact upload completed');
-    });
+      logger.info(`URL: ${result.download_url}`);
+    } catch (e) {
+      logger.error(`Artifact upload failed: ${e.message}`);
+      process.exit(1);
+    }
   },
 };

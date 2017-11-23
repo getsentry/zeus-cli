@@ -4,12 +4,6 @@ const logger = require('./logger');
 function getEnvironment() {
   logger.debug('Initializing CI environment');
 
-  const hookBase = process.env.ZEUS_HOOK_BASE;
-  if (!hookBase) {
-    logger.error('Missing ZEUS_HOOK_BASE environment variable');
-    process.exit(1);
-  }
-
   const environments = requireDir('environments');
   logger.debug(`Found environments: ${Object.keys(environments)}`);
 
@@ -17,14 +11,13 @@ function getEnvironment() {
     .map(key => environments[key])
     .find(env => env);
 
-  if (!environment) {
-    logger.error('No supported CI system detected');
-    process.exit(1);
+  if (environment) {
+    logger.debug(`Environment detected: ${environment.CI_SYSTEM}`);
+  } else {
+    logger.debug('No supported CI system detected');
   }
 
-  logger.debug(`Environment detected: ${environment.CI_SYSTEM}`);
-  environment.HOOK_BASE = hookBase;
-  return environment;
+  return environment || {};
 }
 
 module.exports = getEnvironment();

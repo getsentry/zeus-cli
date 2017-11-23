@@ -37,13 +37,17 @@ Commands:
   zeus completion     generate bash completion script
 
 Options:
+  --url          Fully qualified URL to the Zeus server                 [string]
+  --token        Token for authorized access to Zeus                    [string]
   -v, --version  Show version number                                   [boolean]
   -h, --help     Show help                                             [boolean]
 ```
 
 ### Upload
 
-This uploads a build artifact for processing or storage.
+This uploads a build artifact for processing or storage. The artifact is
+attached to a build and job. On supported CI systems, the build and job ids are
+automatically inferred from the environment.
 
 ```
 zeus upload <file>
@@ -53,8 +57,8 @@ Positionals:
 
 Options:
   -t, --type     Mime type of the file to upload                        [string]
-  -v, --version  Show version number                                   [boolean]
-  -h, --help     Show help                                             [boolean]
+  -j, --job      Unique id of the job in CI                             [string]
+  -b, --build    Unique id of the build in CI                           [string]
 ```
 
 ### Bash Completion
