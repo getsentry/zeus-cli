@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 /* eslint-disable no-unused-expressions */
 
+const logger = require('./logger');
+
 require('yargs')
   .commandDir('commands')
   .demandCommand()
@@ -8,4 +10,8 @@ require('yargs')
   .alias('v', 'version')
   .help()
   .alias('h', 'help')
-  .completion().argv;
+  .completion()
+  .fail((message, _, yargs) => {
+    logger.error(`${message}\n`);
+    yargs.showHelp();
+  }).argv;
