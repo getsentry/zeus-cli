@@ -18,6 +18,7 @@
     "test": "npm-run-all test:eslint test:prettier"
   },
   "dependencies": {
+    "dotenv": "^4.0.0",
     "form-data": "^2.3.1",
     "node-fetch": "^1.7.3",
     "require-dir": "^0.3.2",

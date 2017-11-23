@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /* eslint-disable no-unused-expressions */
 
+require('dotenv').config();
 const logger = require('./logger');
 
 require('yargs')
