@@ -1,5 +1,9 @@
 /* eslint-env jest */
 
+// TODO(ja): Update to jest v21.3.0 once released:
+//            - use expect(promise).rejects.toThrow()
+//            - use expect(jest.fn).toMatchSnapshot()
+
 const fetch = require('node-fetch');
 const request = require('../request');
 
@@ -14,65 +18,54 @@ function mockFetch(status, json, statusText = '') {
 }
 
 describe('request', () => {
-  test('passes all parameters to fetch', async () => {
+  beforeEach(() => {
+    fetch.mockReset();
+  });
+
+  test('passes all parameters to fetch', () => {
     expect.assertions(1);
     mockFetch(200, () => mockPromise());
-    await request('http://example.org', {
+
+    return request('http://example.org', {
       method: 'POST',
       headers: { Authorization: 'bearer yo!' },
+    }).then(() => {
+      expect(fetch.mock.calls[0]).toMatchSnapshot();
     });
-
-    expect(fetch.mock.calls[0]).toMatchSnapshot();
   });
 
-  test('resolves the parsed JSON result for status 200', async () => {
-    expect.assertions(1);
+  test('resolves the parsed JSON result for status 200', () => {
     mockFetch(200, () => mockPromise({ foo: 'bar' }));
-    const result = await request('http://example.org');
-    expect(result).toEqual({ foo: 'bar' });
+    return expect(request('http://example.org')).resolves.toEqual({
+      foo: 'bar',
+    });
   });
 
-  test('resolves undefined for status 204', async () => {
-    expect.assertions(1);
+  test('resolves undefined for status 204', () => {
     mockFetch(204, () => {
       throw new Error('should not be called');
     });
 
-    const result = await request('http://example.org');
-    expect(result).toBeUndefined();
+    return expect(request('http://example.org')).resolves.toBeUndefined();
   });
 
-  test('throws an error containing the status text', async () => {
-    expect.assertions(1);
+  test('throws an error containing the status text', () => {
     mockFetch(400, () => mockPromise(null, 'empty'), 'BAD REQUEST');
-
-    try {
-      await request('http://example.org');
-    } catch (e) {
-      expect(e.message).toEqual('400 BAD REQUEST');
-    }
+    const err = new Error('400 BAD REQUEST');
+    return expect(request('http://example.org')).rejects.toEqual(err);
   });
 
-  test('throws an error containing the resolved error message', async () => {
-    expect.assertions(1);
+  test('throws an error containing the resolved error message', () => {
     const message = 'Error message';
     mockFetch(400, () => mockPromise({ message }));
-
-    try {
-      await request('http://example.org');
-    } catch (e) {
-      expect(e.message).toEqual(message);
-    }
+    const err = new Error(message);
+    return expect(request('http://example.org')).rejects.toEqual(err);
   });
 
-  test('falls back to the status text when parsing errors', async () => {
+  test('falls back to the status text when parsing errors', () => {
     expect.assertions(1);
     mockFetch(400, () => mockPromise({}), 'BAD REQUEST');
-
-    try {
-      await request('http://example.org');
-    } catch (e) {
-      expect(e.message).toEqual('400 BAD REQUEST');
-    }
+    const err = new Error('400 BAD REQUEST');
+    return expect(request('http://example.org')).rejects.toEqual(err);
   });
 });
