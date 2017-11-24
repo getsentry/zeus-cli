@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`request passes all parameters to fetch 1`] = `
+Array [
+  "http://example.org",
+  Object {
+    "headers": Object {
+      "Authorization": "bearer yo!",
+    },
+    "method": "POST",
+  },
+]
+`;
