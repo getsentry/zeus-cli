@@ -47,7 +47,7 @@ module.exports = {
       logger.info(`URL: ${result.download_url}`);
     } catch (e) {
       logger.error(`Artifact upload failed: ${e.message}`);
-      process.exit(1);
+      process.exitCode = 1;
     }
   },
 };
