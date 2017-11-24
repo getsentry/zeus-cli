@@ -33,7 +33,7 @@ function parseError(response) {
  * @returns {Promise<object?>} A Promise to the parsed response body
  * @async
  */
-function request(url, options = {}) {
+function request(url, options) {
   return fetch(url, options).then(response => {
     if (!response.ok) {
       return parseError(response);

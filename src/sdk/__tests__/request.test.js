@@ -7,12 +7,12 @@
 const fetch = require('node-fetch');
 const request = require('../request');
 
-const mockPromise = (value, reason = null) =>
+const mockPromise = (value, reason) =>
   new Promise((resolve, reject) => {
     setImmediate(() => (reason ? reject(reason) : resolve(value)));
   });
 
-function mockFetch(status, json, statusText = '') {
+function mockFetch(status, json, statusText) {
   const ok = status >= 200 && status <= 300;
   fetch.mockReturnValue(mockPromise({ status, ok, json, statusText }));
 }
