@@ -1,7 +1,6 @@
 const { URL } = require('url');
 
 const FormData = require('form-data');
-const ci = require('../environment');
 const request = require('./request');
 
 /**
@@ -80,28 +79,22 @@ class Zeus {
    */
   async uploadArtifact(params) {
     const base = process.env.ZEUS_HOOK_BASE;
+    const { build, file, job, type } = params;
+
     if (!base) {
       throw new Error('Missing ZEUS_HOOK_BASE environment variable');
-    }
-
-    const build = params.build || ci.buildId;
-    if (!build) {
+    } else if (!build) {
       throw new Error('Missing build identifier');
-    }
-
-    const job = params.job || ci.jobId;
-    if (!job) {
+    } else if (!job) {
       throw new Error('Missing job identifier');
-    }
-
-    const data = new FormData();
-    if (!params.file) {
+    } else if (!file) {
       throw new Error('Missing file parameter');
     }
 
-    data.append('file', params.file);
+    const data = new FormData();
+    data.append('file', file);
     if (params.type) {
-      data.append('type', params.type);
+      data.append('type', type);
     }
 
     return this.request(`${base}/builds/${build}/jobs/${job}/artifacts`, {

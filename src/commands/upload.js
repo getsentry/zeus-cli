@@ -1,6 +1,7 @@
 const { createReadStream, existsSync } = require('fs');
+const env = require('../environment');
 const logger = require('../logger');
-const Zeus = require('../zeus');
+const Zeus = require('../sdk');
 
 module.exports = {
   command: ['upload <file>', 'u'],
@@ -36,8 +37,8 @@ module.exports = {
 
       const zeus = new Zeus({ url: argv.url, token: argv.token });
       const result = await zeus.uploadArtifact({
-        build: argv.build,
-        job: argv.job,
+        build: argv.build || env.buildId,
+        job: argv.job || env.jobId,
         file: createReadStream(argv.file),
         type: argv.type,
       });
