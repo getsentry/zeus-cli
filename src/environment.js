@@ -4,7 +4,7 @@ const logger = require('./logger');
 function getEnvironment() {
   logger.debug('Initializing CI environment');
 
-  const environments = requireDir('environments');
+  const environments = requireDir('./environments');
   logger.debug(`Found environments: ${Object.keys(environments)}`);
 
   const environment = Object.keys(environments)
@@ -12,7 +12,7 @@ function getEnvironment() {
     .find(env => env);
 
   if (environment) {
-    logger.debug(`Environment detected: ${environment.CI_SYSTEM}`);
+    logger.debug(`Environment detected: ${environment.id}`);
   } else {
     logger.debug('No supported CI system detected');
   }
