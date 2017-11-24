@@ -1,7 +1,7 @@
 const { URL } = require('url');
 
 const FormData = require('form-data');
-const ci = require('./environment');
+const ci = require('../environment');
 const request = require('./request');
 
 /**
