@@ -6,7 +6,7 @@ const request = require('./request');
 /**
  * Default URL of the Zeus server
  */
-const DEFAULT_URL = 'https://zeus.ci';
+const DEFAULT_URL = 'https://zeus.ci/';
 
 /**
  * @typedef {object} Logger A console logger
@@ -37,8 +37,8 @@ class Client {
    * @constructor
    */
   constructor(options = {}) {
-    this.url = options.url || process.env.ZEUS_URL || DEFAULT_URL;
-    this.token = options.token || process.env.ZEUS_TOKEN || null;
+    this.url = `${new URL(options.url || process.env.ZEUS_URL || DEFAULT_URL)}`;
+    this.token = options.token || process.env.ZEUS_TOKEN || '';
     this.logger = options.logger || console;
   }
 
@@ -63,7 +63,7 @@ class Client {
   async request(path, options = {}) {
     const headers = Object.assign({}, options.headers);
     if (this.token && !headers.Authorization) {
-      headers.Authorization = `bearer ${this.token.toLowerCase()}`;
+      headers.Authorization = `Bearer ${this.token.toLowerCase()}`;
     }
 
     const url = new URL(path, this.url).toString();
@@ -77,7 +77,7 @@ class Client {
    * @param {object} params Parameters for the upload request
    * @returns {Promise<object>} The server response
    */
-  async uploadArtifact(params) {
+  async uploadArtifact(params = {}) {
     const base = process.env.ZEUS_HOOK_BASE;
     const { build, file, job, type } = params;
 
@@ -98,10 +98,12 @@ class Client {
     }
 
     return this.request(`${base}/builds/${build}/jobs/${job}/artifacts`, {
-      body: data,
+      headers: data.getHeaders(),
       method: 'POST',
+      body: data,
     });
   }
 }
 
 module.exports = Client;
+Client.DEFAULT_URL = DEFAULT_URL;

@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Client request accepts Authorization header overrides 1`] = `
+Array [
+  "https://zeus.ci/something",
+  Object {
+    "headers": Object {
+      "Authorization": "custom",
+    },
+  },
+]
+`;
+
+exports[`Client request accepts absolute URLs 1`] = `
+Array [
+  "http://example.org/",
+  Object {
+    "headers": Object {},
+  },
+]
+`;
+
+exports[`Client request accepts options 1`] = `
+Array [
+  "https://zeus.ci/something",
+  Object {
+    "body": "{\\"some\\":\\"data\\"}",
+    "headers": Object {},
+    "method": "POST",
+  },
+]
+`;
+
+exports[`Client request adds the Authorization token header 1`] = `
+Array [
+  "https://zeus.ci/something",
+  Object {
+    "headers": Object {
+      "Accept": "application/json",
+      "Authorization": "Bearer zeus-u-1234567890",
+    },
+  },
+]
+`;
+
+exports[`Client request issues a request without options 1`] = `
+Array [
+  "https://zeus.ci/something",
+  Object {
+    "headers": Object {},
+  },
+]
+`;
+
+exports[`Client request rejects invalid URLs 1`] = `[TypeError [ERR_INVALID_URL]: Invalid URL: ///]`;
+
+exports[`Client uploadArtifact rejects without ZEUS_HOOK_BASE 1`] = `[Error: Missing ZEUS_HOOK_BASE environment variable]`;
+
+exports[`Client uploadArtifact rejects without the build parameter 1`] = `[Error: Missing build identifier]`;
+
+exports[`Client uploadArtifact rejects without the file parameter 1`] = `[Error: Missing file parameter]`;
+
+exports[`Client uploadArtifact rejects without the job parameter 1`] = `[Error: Missing job identifier]`;
+
+exports[`Client uploadArtifact uploads a file with explicit type 1`] = `
+Array [
+  "https://example.org/hooks/feedbeef/builds/12345/jobs/54321/artifacts",
+  Object {
+    "body": FormData {
+      "data": Object {
+        "file": "FILE_DATA",
+        "type": "text/plain",
+      },
+      "options": undefined,
+    },
+    "headers": Object {
+      "content-type": "multipart/form-data; boundary=---feedface",
+    },
+    "method": "POST",
+  },
+]
+`;
+
+exports[`Client uploadArtifact uploads a file without explicit type 1`] = `
+Array [
+  "https://example.org/hooks/feedbeef/builds/12345/jobs/54321/artifacts",
+  Object {
+    "body": FormData {
+      "data": Object {
+        "file": "FILE_DATA",
+      },
+      "options": undefined,
+    },
+    "headers": Object {
+      "content-type": "multipart/form-data; boundary=---feedface",
+    },
+    "method": "POST",
+  },
+]
+`;
