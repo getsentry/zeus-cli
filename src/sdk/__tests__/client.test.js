@@ -1,5 +1,7 @@
 /* eslint-env jest */
 
+'use strict';
+
 const Client = require('../client');
 const request = require('../request');
 
@@ -8,6 +10,7 @@ jest.mock('../request');
 describe('Client', () => {
   beforeEach(() => {
     jest.resetAllMocks();
+    request.mockReturnValue(Promise.resolve({ some: 'data' }));
   });
 
   describe('constructor', () => {
@@ -78,11 +81,10 @@ describe('Client', () => {
     });
 
     test('resolves the response value', () => {
-      const data = { some: 'value' };
-      request.mockReturnValue(data);
-
       const client = new Client();
-      return expect(client.request('something')).resolves.toBe(data);
+      return expect(client.request('something')).resolves.toEqual({
+        some: 'data',
+      });
     });
 
     test('accepts options', () => {

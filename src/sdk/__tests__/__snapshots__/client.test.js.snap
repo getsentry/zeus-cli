@@ -52,7 +52,7 @@ Array [
 ]
 `;
 
-exports[`Client request rejects invalid URLs 1`] = `[TypeError [ERR_INVALID_URL]: Invalid URL: ///]`;
+exports[`Client request rejects invalid URLs 1`] = `[TypeError: Invalid URL]`;
 
 exports[`Client uploadArtifact rejects without ZEUS_HOOK_BASE 1`] = `[Error: Missing ZEUS_HOOK_BASE environment variable]`;
 

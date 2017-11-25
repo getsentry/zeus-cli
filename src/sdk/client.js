@@ -1,7 +1,6 @@
 'use strict';
 
-const { URL } = require('url');
-
+/* global URL */
 const FormData = require('form-data');
 const request = require('./request');
 
@@ -38,10 +37,11 @@ class Client {
    * @param {ZeusOptions} options Optional parameters for the client
    * @constructor
    */
-  constructor(options = {}) {
-    this.url = `${new URL(options.url || process.env.ZEUS_URL || DEFAULT_URL)}`;
-    this.token = options.token || process.env.ZEUS_TOKEN || '';
-    this.logger = options.logger || console;
+  constructor(options) {
+    const o = options || {};
+    this.url = new URL(o.url || process.env.ZEUS_URL || DEFAULT_URL).toString();
+    this.token = o.token || process.env.ZEUS_TOKEN || '';
+    this.logger = o.logger || console;
   }
 
   /**
@@ -62,15 +62,19 @@ class Client {
    * @param {object} options Options to the {@link fetch} call.
    * @returns {Promise<object>} A Promise to the parsed response body.
    */
-  async request(path, options = {}) {
-    const headers = Object.assign({}, options.headers);
+  request(path, options) {
+    const headers = Object.assign({}, (options || {}).headers);
     if (this.token && !headers.Authorization) {
       headers.Authorization = `Bearer ${this.token.toLowerCase()}`;
     }
 
-    const url = new URL(path, this.url).toString();
-    const opts = Object.assign({}, options, { headers });
-    return request(url, opts);
+    try {
+      const url = new URL(path, this.url).toString();
+      const opts = Object.assign({}, options, { headers });
+      return request(url, opts);
+    } catch (e) {
+      return Promise.reject(e);
+    }
   }
 
   /**
@@ -79,31 +83,35 @@ class Client {
    * @param {object} params Parameters for the upload request
    * @returns {Promise<object>} The server response
    */
-  async uploadArtifact(params = {}) {
+  uploadArtifact(params) {
     const base = process.env.ZEUS_HOOK_BASE;
-    const { build, file, job, type } = params;
 
-    if (!base) {
-      throw new Error('Missing ZEUS_HOOK_BASE environment variable');
-    } else if (!build) {
-      throw new Error('Missing build identifier');
-    } else if (!job) {
-      throw new Error('Missing job identifier');
-    } else if (!file) {
-      throw new Error('Missing file parameter');
+    try {
+      if (!base) {
+        throw new Error('Missing ZEUS_HOOK_BASE environment variable');
+      } else if (!params.build) {
+        throw new Error('Missing build identifier');
+      } else if (!params.job) {
+        throw new Error('Missing job identifier');
+      } else if (!params.file) {
+        throw new Error('Missing file parameter');
+      }
+
+      const data = new FormData();
+      data.append('file', params.file);
+      if (params.type) {
+        data.append('type', params.type);
+      }
+
+      const url = `${base}/builds/${params.build}/jobs/${params.job}/artifacts`;
+      return this.request(url, {
+        headers: data.getHeaders(),
+        method: 'POST',
+        body: data,
+      });
+    } catch (e) {
+      return Promise.reject(e);
     }
-
-    const data = new FormData();
-    data.append('file', file);
-    if (params.type) {
-      data.append('type', type);
-    }
-
-    return this.request(`${base}/builds/${build}/jobs/${job}/artifacts`, {
-      headers: data.getHeaders(),
-      method: 'POST',
-      body: data,
-    });
   }
 }
 
