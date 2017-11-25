@@ -1,3 +1,5 @@
+'use strict';
+
 const requireDir = require('require-dir');
 const logger = require('./logger');
 

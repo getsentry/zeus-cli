@@ -1,3 +1,5 @@
+'use strict';
+
 /* eslint-env jest */
 /* eslint-disable class-methods-use-this */
 

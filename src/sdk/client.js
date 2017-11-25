@@ -1,3 +1,5 @@
+'use strict';
+
 const { URL } = require('url');
 
 const FormData = require('form-data');

@@ -1,3 +1,5 @@
+'use strict';
+
 const { createReadStream, existsSync } = require('fs');
 const env = require('../environment');
 const logger = require('../logger');

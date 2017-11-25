@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = process.env.TRAVIS === 'true' && {
   id: 'travis',
   buildId: process.env.TRAVIS_BUILD_ID,

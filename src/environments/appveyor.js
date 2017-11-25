@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = process.env.APPVEYOR === 'True' && {
   id: 'appveyor',
   buildId: process.env.APPVEYOR_BUILD_ID,

@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 /* eslint-disable no-unused-expressions */
 
+'use strict';
+
 require('dotenv').config();
 const logger = require('./logger');
 
