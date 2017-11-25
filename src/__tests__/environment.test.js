@@ -13,8 +13,11 @@ xdescribe('environment', () => {
   const original = Object.assign({}, process.env);
 
   beforeEach(() => {
-    process.env = Object.assign({}, original);
     jest.resetModules();
+  });
+
+  afterEach(() => {
+    process.env = Object.assign({}, original);
   });
 
   test('returns an empty object by default', () => {
