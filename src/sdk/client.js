@@ -1,7 +1,7 @@
 'use strict';
 
-/* global URL */
 const FormData = require('form-data');
+const URL = require('whatwg-url').URL;
 const request = require('./request');
 
 /**
