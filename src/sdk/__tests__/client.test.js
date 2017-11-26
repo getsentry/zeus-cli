@@ -1,6 +1,6 @@
-/* eslint-env jest */
-
 'use strict';
+
+/* eslint-env jest */
 
 const Client = require('../client');
 const request = require('../request');

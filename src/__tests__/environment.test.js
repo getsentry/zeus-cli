@@ -1,3 +1,5 @@
+'use strict';
+
 /* eslint-env jest */
 /* eslint-disable global-require */
 

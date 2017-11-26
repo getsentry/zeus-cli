@@ -1,3 +1,5 @@
+'use strict';
+
 /* eslint-env jest */
 
 // TODO(ja): Update to jest v21.3.0 once released:
