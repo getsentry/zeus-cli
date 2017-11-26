@@ -9,7 +9,7 @@ jest.mock('../request');
 
 describe('Client', () => {
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
     request.mockReturnValue(Promise.resolve({ some: 'data' }));
   });
 
