@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`upload command uploads the artifact 1`] = `
+Array [
+  Object {
+    "build": "12345",
+    "file": Object {
+      "path": "existing.json",
+    },
+    "job": "54321",
+    "type": "application/json",
+  },
+]
+`;
+
+exports[`upload command uses the build ID from the environment 1`] = `
+Array [
+  Object {
+    "build": "12345",
+    "file": Object {
+      "path": "existing.json",
+    },
+    "job": "54321",
+    "type": "application/json",
+  },
+]
+`;
+
+exports[`upload command uses the build ID from the environment 2`] = `
+Array [
+  Object {
+    "build": "12345",
+    "file": Object {
+      "path": "existing.json",
+    },
+    "job": "54321",
+    "type": "application/json",
+  },
+]
+`;

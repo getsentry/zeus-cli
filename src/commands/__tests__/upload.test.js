@@ -1,0 +1,120 @@
+'use strict';
+
+/* eslint-env jest */
+
+const fs = require('fs');
+const command = require('../upload');
+const environment = require('../../environment');
+const logger = require('../../logger');
+const Zeus = require('../../sdk');
+
+jest.mock('fs');
+jest.mock('../../environment');
+jest.mock('../../logger');
+jest.mock('../../sdk/client');
+
+describe('upload command', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+
+    fs.existsSync.mockImplementation(name => name === 'existing.json');
+
+    Zeus.instance.uploadArtifact.mockImplementation(() =>
+      Promise.resolve({
+        id: '9f32e479-0382-43c3-a18e-d35de81c58dc',
+        download_url: 'https://zeus.ci/artifacts/9f32e479/download',
+      })
+    );
+  });
+
+  test('uploads the artifact', () => {
+    const argv = {
+      file: 'existing.json',
+      build: '12345',
+      job: '54321',
+      type: 'application/json',
+    };
+
+    expect.assertions(1);
+    return command.handler(argv).then(() => {
+      expect(Zeus.instance.uploadArtifact.mock.calls[0]).toMatchSnapshot();
+    });
+  });
+
+  test('logs the artifact download URL', () => {
+    const argv = {
+      file: 'existing.json',
+      build: '12345',
+      job: '54321',
+      type: 'application/json',
+    };
+
+    expect.assertions(1);
+    return command.handler(argv).then(() => {
+      const downloadUrl = 'https://zeus.ci/artifacts/9f32e479/download';
+      expect(logger).toHaveBeenCalledWith(expect.stringMatching(downloadUrl));
+    });
+  });
+
+  test('uses the build ID from the environment', () => {
+    environment.buildId = '12345';
+    const argv = {
+      file: 'existing.json',
+      job: '54321',
+      type: 'application/json',
+    };
+
+    expect.assertions(1);
+    return command.handler(argv).then(() => {
+      expect(Zeus.instance.uploadArtifact.mock.calls[0]).toMatchSnapshot();
+    });
+  });
+
+  test('uses the build ID from the environment', () => {
+    environment.jobId = '54321';
+    const argv = {
+      file: 'existing.json',
+      build: '12345',
+      type: 'application/json',
+    };
+
+    expect.assertions(1);
+    return command.handler(argv).then(() => {
+      expect(Zeus.instance.uploadArtifact.mock.calls[0]).toMatchSnapshot();
+    });
+  });
+
+  test('logs an error for missing files', () => {
+    const argv = {
+      file: 'invalid.json',
+      build: '12345',
+      job: '54321',
+      type: 'application/json',
+    };
+
+    expect.assertions(1);
+    return command.handler(argv).then(() => {
+      expect(logger).toHaveBeenCalledWith(expect.stringMatching(/not exist/));
+    });
+  });
+
+  test('logs errors from the SDK', () => {
+    const argv = {
+      file: 'existing.json',
+      build: '12345',
+      job: '54321',
+      type: 'application/json',
+    };
+
+    Zeus.instance.uploadArtifact.mockImplementation(() =>
+      Promise.reject(new Error('expected failure'))
+    );
+
+    expect.assertions(1);
+    return command.handler(argv).then(() => {
+      expect(logger).toHaveBeenCalledWith(
+        expect.stringMatching(/expected failure/)
+      );
+    });
+  });
+});
