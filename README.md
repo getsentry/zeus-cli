@@ -15,7 +15,7 @@ The official command line utility for [Zeus](https://github.com/getsentry/zeus).
 
 * [Installation](#installation)
 * [Usage](#usage)
-  * [Upload](#upload)
+  * [Uploading Artifacts](#uploading-artifacts)
   * [Bash Completion](#bash-completion)
 
 ## Installation
@@ -33,7 +33,7 @@ yarn add -g @zeus-ci/cli
 zeus <command>
 
 Commands:
-  zeus upload <file>  Upload a build artifact                        [aliases: u]
+  zeus upload <file>  Upload a build artifact                       [aliases: u]
   zeus completion     generate bash completion script
 
 Options:
@@ -43,11 +43,15 @@ Options:
   -h, --help     Show help                                             [boolean]
 ```
 
-### Upload
+### Uploading Artifacts
 
-This uploads a build artifact for processing or storage. The artifact is
-attached to a build and job. On supported CI systems, the build and job ids are
-automatically inferred from the environment.
+Upload a build artifact for processing or storage. The artifact is attached to a
+build and job. On supported CI systems, the build and job ids are automatically
+inferred from the environment.
+
+Optionally, you can specify a mime type to classify the artifact with `--type`.
+This is used to hint Zeus how the artifact should be processed. By default, the
+mime type is inferred from the file name.
 
 ```
 zeus upload <file>
@@ -56,9 +60,24 @@ Positionals:
   file  Path to the artifact                                 [string] [required]
 
 Options:
+  --url          Fully qualified URL to the Zeus server                 [string]
+  --token        Token for authorized access to Zeus                    [string]
   -t, --type     Mime type of the file to upload                        [string]
   -j, --job      Unique id of the job in CI                             [string]
   -b, --build    Unique id of the build in CI                           [string]
+```
+
+**Examples:**
+
+```sh
+# On a supported build server
+zeus upload coverage.xml
+
+# With explicit mime type
+zeus upload -t 'text/xml+coverage' coverage.xml
+
+# On a custom build server
+zeus upload -b $MY_BUILD_ID -j $MY_JOB_ID -t 'text/xml+coverage' coverage.xml
 ```
 
 ### Bash Completion
