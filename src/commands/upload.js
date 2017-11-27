@@ -32,7 +32,7 @@ module.exports = {
       }),
 
   handler: argv => {
-    const zeus = new Zeus({ url: argv.url, token: argv.token });
+    const zeus = new Zeus({ url: argv.url, token: argv.token, logger });
     const promise = !fs.existsSync(argv.file)
       ? Promise.reject(new Error(`File does not exist: ${argv.file}`))
       : zeus.uploadArtifact({
