@@ -29,6 +29,10 @@ yarn add -g @zeus-ci/cli
 
 ## Usage
 
+The CLI offers a set of commands to interact with the Zeus server. Besides
+specific parameters and options for each command, there is a range of common
+options:
+
 ```
 zeus <command>
 
@@ -41,6 +45,27 @@ Options:
   --token        Token for authorized access to Zeus                    [string]
   -v, --version  Show version number                                   [boolean]
   -h, --help     Show help                                             [boolean]
+```
+
+The `--url` parameter defaults to `https://zeus.ci`. If you are running a
+self-hosted version of Zeus, set this parameter to the fully qualified URL that
+the server is listening to. The value can also be provided via the `ZEUS_URL`
+environment variable. The command line option always takes precedence over the
+environment.
+
+Most commands require a token to authorize access. This can either be a personal
+token obtained from the [Account Settings Page](https://zeus.ci/settings/token)
+or a repository token obtained from the respective repository settings page. Use
+the `--token` parameter or `ZEUS_TOKEN` environment variable to provide the
+token.
+
+The CLI also supports reading environment variables from a `.env` file located
+in the current working directory. Note that command line parameters always
+override the environment.
+
+```sh
+ZEUS_URL=https://zeus.ci
+ZEUS_TOKEN=zeus-u-xxxxxxxx
 ```
 
 ### Uploading Artifacts
