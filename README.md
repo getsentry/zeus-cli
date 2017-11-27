@@ -16,6 +16,7 @@ The official command line utility for [Zeus](https://github.com/getsentry/zeus).
 * [Installation](#installation)
 * [Usage](#usage)
   * [Uploading Artifacts](#uploading-artifacts)
+  * [Supported CI Systems](#supported-ci-systems)
   * [Bash Completion](#bash-completion)
 
 ## Installation
@@ -67,6 +68,15 @@ override the environment.
 ZEUS_URL=https://zeus.ci
 ZEUS_TOKEN=zeus-u-xxxxxxxx
 ```
+
+### Supported CI Systems
+
+In some environments, the CLI is able to infer parameters like build or job
+numbers and commit hashes for you. In this case, you can omit the respective
+paramters. These systems are:
+
+* Travis CI
+* AppVeyor
 
 ### Uploading Artifacts
 
