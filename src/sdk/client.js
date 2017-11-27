@@ -59,6 +59,7 @@ class Client {
     this.url = sanitizeURL(o.url || process.env.ZEUS_URL || DEFAULT_URL);
     this.token = o.token || process.env.ZEUS_TOKEN || '';
     this.logger = o.logger || console;
+    this.logger.debug = this.logger.debug || function noop() {};
   }
 
   /**
@@ -86,8 +87,12 @@ class Client {
     }
 
     try {
+      const method = (options || {}).method || 'GET';
       const url = new URL(path, this.url).toString();
       const opts = Object.assign({}, options, { headers });
+
+      this.logger.debug(`${method} ${url}`);
+      this.logger.debug(`Authorization: ${headers.Authorization || 'none'}`);
       return request(url, opts);
     } catch (e) {
       return Promise.reject(e);
