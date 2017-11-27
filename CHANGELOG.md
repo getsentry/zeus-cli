@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.4.0
+
+* Node v4 is now fully supported
+* Support `ZEUS_URL` and `ZEUS_TOKEN` environment variables
+* Added `--url` and `--token` command line parameters
+* Read environment variables from `.env` files in your working directory
+* Improved URL handling and sanatizing (e.g. `ZEUS_HOOK_BASE`)
+* Improved documentation for configuration and the upload command
+* Improved error output and exit codes
+
 ## v0.3.3
 
 * Require Node 4.5.0 or later
