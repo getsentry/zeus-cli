@@ -6,7 +6,7 @@
   "repository": "https://github.com/getsentry/zeus-cli",
   "license": "Apache-2.0",
   "bin": {
-    "zeus": "src/index.js"
+    "zeus": "bin/zeus"
   },
   "scripts": {
     "fix:eslint": "eslint --fix src",
