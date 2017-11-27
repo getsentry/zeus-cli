@@ -28,6 +28,23 @@ const DEFAULT_URL = 'https://zeus.ci/';
  */
 
 /**
+ * Validates the given URL and makes sure it ends with a trailing slash.
+ * If the URL is not valid, an Error with details is thrown.
+ *
+ * @param {string} url A fully qualified URL to sanitize
+ * @returns {string} The sanitized URL
+ */
+function sanitizeURL(url) {
+  let sanitized = new URL(url).toString();
+
+  if (!sanitized.endsWith('/')) {
+    sanitized += '/';
+  }
+
+  return sanitized;
+}
+
+/**
  * Zeus API client
  */
 class Client {
@@ -39,7 +56,7 @@ class Client {
    */
   constructor(options) {
     const o = options || {};
-    this.url = new URL(o.url || process.env.ZEUS_URL || DEFAULT_URL).toString();
+    this.url = sanitizeURL(o.url || process.env.ZEUS_URL || DEFAULT_URL);
     this.token = o.token || process.env.ZEUS_TOKEN || '';
     this.logger = o.logger || console;
   }
@@ -103,7 +120,11 @@ class Client {
         data.append('type', params.type);
       }
 
-      const url = `${base}/builds/${params.build}/jobs/${params.job}/artifacts`;
+      const url = new URL(
+        `builds/${params.build}/jobs/${params.job}/artifacts`,
+        sanitizeURL(base)
+      ).toString();
+
       return this.request(url, {
         headers: data.getHeaders(),
         method: 'POST',

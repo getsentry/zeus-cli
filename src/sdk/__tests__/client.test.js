@@ -39,6 +39,12 @@ describe('Client', () => {
       expect(client.url).toBe(url);
     });
 
+    test('ensures a valid base URL', () => {
+      const url = 'https://example.org/path';
+      const client = new Client({ url });
+      expect(client.url).toBe(`${url}/`);
+    });
+
     test('fails with an invalid URL', () => {
       const url = 'https://';
       expect(() => new Client({ url })).toThrow(/valid URL/);
@@ -142,7 +148,7 @@ describe('Client', () => {
     let params;
 
     beforeEach(() => {
-      process.env.ZEUS_HOOK_BASE = 'https://example.org/hooks/feedbeef';
+      process.env.ZEUS_HOOK_BASE = 'https://example.org/hooks/feedbeef/';
       params = {
         build: '12345',
         job: '54321',
@@ -169,12 +175,25 @@ describe('Client', () => {
       });
     });
 
+    test('accepts ZEUS_HOOK_BASE without trailing slash', () => {
+      expect.assertions(1);
+      process.env.ZEUS_HOOK_BASE = 'https://example.org/hooks/feedbeef';
+      return client.uploadArtifact(params).then(() => {
+        expect(request.mock.calls[0]).toMatchSnapshot();
+      });
+    });
+
     test('rejects without parameters', () =>
       // This should probably become an error message at some point
       expect(client.uploadArtifact()).rejects.toBeDefined());
 
     test('rejects without ZEUS_HOOK_BASE', () => {
       delete process.env.ZEUS_HOOK_BASE;
+      return expect(client.uploadArtifact(params)).rejects.toMatchSnapshot();
+    });
+
+    test('rejects an invalid ZEUS_HOOK_BASE', () => {
+      process.env.ZEUS_HOOK_BASE = '///';
       return expect(client.uploadArtifact(params)).rejects.toMatchSnapshot();
     });
 

@@ -54,6 +54,26 @@ Array [
 
 exports[`Client request rejects invalid URLs 1`] = `[TypeError: Invalid URL]`;
 
+exports[`Client uploadArtifact accepts ZEUS_HOOK_BASE without trailing slash 1`] = `
+Array [
+  "https://example.org/hooks/feedbeef/builds/12345/jobs/54321/artifacts",
+  Object {
+    "body": FormData {
+      "data": Object {
+        "file": "FILE_DATA",
+      },
+      "options": undefined,
+    },
+    "headers": Object {
+      "content-type": "multipart/form-data; boundary=---feedface",
+    },
+    "method": "POST",
+  },
+]
+`;
+
+exports[`Client uploadArtifact rejects an invalid ZEUS_HOOK_BASE 1`] = `[TypeError: Invalid URL]`;
+
 exports[`Client uploadArtifact rejects without ZEUS_HOOK_BASE 1`] = `[Error: Missing ZEUS_HOOK_BASE environment variable]`;
 
 exports[`Client uploadArtifact rejects without the build parameter 1`] = `[Error: Missing build identifier]`;
