@@ -78,6 +78,10 @@ Optionally, you can specify a mime type to classify the artifact with `--type`.
 This is used to hint Zeus how the artifact should be processed. By default, the
 mime type is inferred from the file name.
 
+**NOTE:** This command still uses the legacy `ZEUS_HOOK_BASE` environment
+variable. This requires a hook to be configured in the repository settings. In
+future versions, this will be replaced with the default authorization tokens.
+
 ```
 zeus upload <file>
 
