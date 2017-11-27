@@ -36,6 +36,17 @@ describe('request', () => {
     });
   });
 
+  test('allows Accept header overrides', () => {
+    expect.assertions(1);
+    mockFetch(200, () => mockPromise());
+
+    return request('http://example.org', {
+      headers: { Accept: 'text/html' },
+    }).then(() => {
+      expect(fetch.mock.calls[0]).toMatchSnapshot();
+    });
+  });
+
   test('resolves the parsed JSON result for status 200', () => {
     mockFetch(200, () => mockPromise({ foo: 'bar' }));
     return expect(request('http://example.org')).resolves.toEqual({

@@ -36,7 +36,13 @@ function parseError(response) {
  * @async
  */
 function request(url, options) {
-  return fetch(url, options).then(response => {
+  const headers = Object.assign({}, (options || {}).headers);
+  if (!headers.Accept) {
+    headers.Accept = 'application/json';
+  }
+
+  const opts = Object.assign({}, options, { headers });
+  return fetch(url, opts).then(response => {
     if (!response.ok) {
       return parseError(response);
     }
