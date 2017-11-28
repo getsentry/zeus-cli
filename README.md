@@ -18,6 +18,7 @@ The official command line utility for [Zeus](https://github.com/getsentry/zeus).
   * [Uploading Artifacts](#uploading-artifacts)
   * [Supported CI Systems](#supported-ci-systems)
   * [Bash Completion](#bash-completion)
+* [Development](#development)
 
 ## Installation
 
@@ -130,3 +131,29 @@ zeus completion >> ~/.bashrc
 # macOS
 zeus completion >> ~/.bash_profile
 ```
+
+## Development
+
+```sh
+# Install dependencies
+yarn
+
+# Run the bot
+yarn start
+
+# Run test watchers
+yarn test:watch
+```
+
+We use [prettier](https://prettier.io/) for auto-formatting and
+[eslint](https://eslint.org/) as linter. Both tools can automatically fix a lot
+of issues for you. To invoke them, simply run:
+
+```sh
+yarn fix
+```
+
+It is highly recommended to use VSCode and install the suggested extensions.
+They will configure your IDE to match the coding style, invoke auto formatters
+every time you save and run tests in the background for you. No need to run the
+watchers manually.
