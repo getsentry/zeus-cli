@@ -35,7 +35,7 @@ The CLI offers a set of commands to interact with the Zeus server. Besides
 specific parameters and options for each command, there is a range of common
 options:
 
-```
+```text
 zeus <command>
 
 Commands:
@@ -93,7 +93,7 @@ mime type is inferred from the file name.
 variable. This requires a hook to be configured in the repository settings. In
 future versions, this will be replaced with the default authorization tokens.
 
-```
+```text
 zeus upload <file>
 
 Positionals:
