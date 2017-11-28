@@ -15,8 +15,8 @@ The official command line utility for [Zeus](https://github.com/getsentry/zeus).
 
 * [Installation](#installation)
 * [Usage](#usage)
-  * [Uploading Artifacts](#uploading-artifacts)
   * [Supported CI Systems](#supported-ci-systems)
+  * [Uploading Artifacts](#uploading-artifacts)
   * [Bash Completion](#bash-completion)
 * [Development](#development)
 
