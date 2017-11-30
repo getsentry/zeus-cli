@@ -65,6 +65,7 @@ Array [
       "options": undefined,
     },
     "headers": Object {
+      "Content-Length": "42",
       "content-type": "multipart/form-data; boundary=---feedface",
     },
     "method": "POST",
@@ -94,6 +95,7 @@ Array [
       "options": undefined,
     },
     "headers": Object {
+      "Content-Length": "42",
       "content-type": "multipart/form-data; boundary=---feedface",
     },
     "method": "POST",
@@ -112,6 +114,7 @@ Array [
       "options": undefined,
     },
     "headers": Object {
+      "Content-Length": "42",
       "content-type": "multipart/form-data; boundary=---feedface",
     },
     "method": "POST",

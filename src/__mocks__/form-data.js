@@ -13,7 +13,14 @@ module.exports = class FormData {
     this.data[field] = value;
   }
 
-  getHeaders() {
-    return { 'content-type': 'multipart/form-data; boundary=---feedface' };
+  getHeaders(headers) {
+    return Object.assign(
+      { 'content-type': 'multipart/form-data; boundary=---feedface' },
+      headers
+    );
+  }
+
+  getLength(cb) {
+    cb(null, 42);
   }
 };

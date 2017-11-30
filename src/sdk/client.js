@@ -110,10 +110,38 @@ class Client {
   }
 
   /**
+   * Posts the given form the the specified endpoint
+   *
+   * This prevents requests with chunked transfer encoding by specifying
+   * Content-Length of the body explicitly. This might lead to higher resource
+   * consumption while sending the request, but works around servers that do not
+   * support chunked requests.
+   *
+   * TODO: Once Zeus server has been updated to support chunked requests, this
+   * method should be removed again.
+   *
+   * @param {string} path The endpoint of the API call
+   * @param {FormData} data Request body form data
+   * @returns {Promise<object>} The parsed server response
+   */
+  postForm(path, data) {
+    return new Promise((resolve, reject) => {
+      /* istanbul ignore next */
+      data.getLength((e, length) => (e ? reject(e) : resolve(length)));
+    }).then(length =>
+      this.request(path, {
+        headers: data.getHeaders({ 'Content-Length': `${length}` }),
+        method: 'POST',
+        body: data,
+      })
+    );
+  }
+
+  /**
    * Uploads a new build artifact for a given job.
    *
    * @param {object} params Parameters for the upload request
-   * @returns {Promise<object>} The server response
+   * @returns {Promise<object>} The parsed server response
    */
   uploadArtifact(params) {
     const base = process.env.ZEUS_HOOK_BASE;
@@ -140,11 +168,7 @@ class Client {
         sanitizeURL(base)
       ).toString();
 
-      return this.request(url, {
-        headers: data.getHeaders(),
-        method: 'POST',
-        body: data,
-      });
+      return this.postForm(url, data);
     } catch (e) {
       return Promise.reject(e);
     }
