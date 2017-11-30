@@ -22,7 +22,7 @@ describe('upload command', () => {
     Zeus.instance.uploadArtifact.mockImplementation(() =>
       Promise.resolve({
         id: '9f32e479-0382-43c3-a18e-d35de81c58dc',
-        download_url: 'https://zeus.ci/artifacts/9f32e479/download',
+        download_url: '/artifacts/9f32e479/download',
       })
     );
   });

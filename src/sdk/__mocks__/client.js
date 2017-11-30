@@ -2,6 +2,7 @@
 
 /* eslint-env jest */
 const instance = {
+  getUrl: path => `https://zeus.ci${path}`,
   uploadArtifact: jest.fn(),
 };
 

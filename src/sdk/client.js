@@ -63,6 +63,16 @@ class Client {
   }
 
   /**
+   * Computes the absolute URL of an endpoint specified by the given path
+   *
+   * @param {string} path Path to an endpoint
+   * @returns {string} The absolute URL to the endpoint
+   */
+  getUrl(path) {
+    return new URL(path, this.url).toString();
+  }
+
+  /**
    * Performs an API request to the given path.
    *
    * The request is performed relative to the configured url, unless the path is
@@ -88,7 +98,7 @@ class Client {
 
     try {
       const method = (options || {}).method || 'GET';
-      const url = new URL(path, this.url).toString();
+      const url = this.getUrl(path);
       const opts = Object.assign({}, options, { headers });
 
       this.logger.debug(`${method} ${url}`);
