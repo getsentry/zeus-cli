@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.4.1
+
+* Fix an issue that prevented artifact uploads
+* Show full download URL after successful artifact upload
+* Improve debug log output
+
 ## v0.4.0
 
 * Node v4 is now fully supported
