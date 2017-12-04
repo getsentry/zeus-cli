@@ -200,6 +200,14 @@ describe('Client', () => {
       });
     });
 
+    test('uploads multiple files', () => {
+      expect.assertions(1);
+      params.file = ['FIRST_FILE', 'SECOND_FILE'];
+      return client.uploadArtifact(params).then(() => {
+        expect(request.mock.calls).toMatchSnapshot();
+      });
+    });
+
     test('accepts ZEUS_HOOK_BASE without trailing slash', () => {
       expect.assertions(1);
       process.env.ZEUS_HOOK_BASE = 'https://example.org/hooks/feedbeef';
