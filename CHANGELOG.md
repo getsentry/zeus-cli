@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.4.2
+
+* Support multiple files in one upload command
+
 ## v0.4.1
 
 * Fix an issue that prevented artifact uploads
