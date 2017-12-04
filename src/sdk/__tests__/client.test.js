@@ -142,6 +142,31 @@ describe('Client', () => {
     });
   });
 
+  describe('postForm', () => {
+    let client;
+
+    beforeEach(() => {
+      client = new Client();
+      client.request = jest.fn();
+    });
+
+    test('calls request with a form data and correct headers', () => {
+      expect.assertions(1);
+      const data = { some: 'data' };
+      return client.postForm('something', data).then(() => {
+        expect(client.request.mock.calls[0]).toMatchSnapshot();
+      });
+    });
+
+    test('does not include null or undefined values', () => {
+      expect.assertions(1);
+      const data = { some: 'data', a: null, b: undefined };
+      return client.postForm('something', data).then(() => {
+        expect(client.request.mock.calls[0]).toMatchSnapshot();
+      });
+    });
+  });
+
   describe('uploadArtifact', () => {
     const env = Object.assign({}, process.env);
     const client = new Client();

@@ -1,5 +1,43 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Client postForm calls request with a form data and correct headers 1`] = `
+Array [
+  "something",
+  Object {
+    "body": FormData {
+      "data": Object {
+        "some": "data",
+      },
+      "options": undefined,
+    },
+    "headers": Object {
+      "Content-Length": "42",
+      "content-type": "multipart/form-data; boundary=---feedface",
+    },
+    "method": "POST",
+  },
+]
+`;
+
+exports[`Client postForm does not include null or undefined values 1`] = `
+Array [
+  "something",
+  Object {
+    "body": FormData {
+      "data": Object {
+        "some": "data",
+      },
+      "options": undefined,
+    },
+    "headers": Object {
+      "Content-Length": "42",
+      "content-type": "multipart/form-data; boundary=---feedface",
+    },
+    "method": "POST",
+  },
+]
+`;
+
 exports[`Client request accepts Authorization header overrides 1`] = `
 Array [
   "https://zeus.ci/something",
