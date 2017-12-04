@@ -6,8 +6,8 @@ const logger = require('../logger');
 const Zeus = require('../sdk');
 
 module.exports = {
-  command: ['upload <file>', 'u'],
-  description: 'Upload a build artifact',
+  command: ['upload <file...>', 'u'],
+  description: 'Upload build artifacts',
 
   builder: /* istanbul ignore next */ yargs =>
     yargs
@@ -33,23 +33,27 @@ module.exports = {
 
   handler: argv => {
     const zeus = new Zeus({ url: argv.url, token: argv.token, logger });
-    const promise = !fs.existsSync(argv.file)
-      ? Promise.reject(new Error(`File does not exist: ${argv.file}`))
-      : zeus.uploadArtifact({
-          build: argv.build || env.buildId,
-          job: argv.job || env.jobId,
-          file: fs.createReadStream(argv.file),
-          type: argv.type,
-        });
+    const uploads = argv.file.map(file => {
+      const promise = !fs.existsSync(file)
+        ? Promise.reject(new Error(`File does not exist: ${file}`))
+        : zeus.uploadArtifact({
+            build: argv.build || env.buildId,
+            job: argv.job || env.jobId,
+            file: fs.createReadStream(file),
+            type: argv.type,
+          });
 
-    return promise
-      .then(result => {
-        logger.info('Artifact upload completed');
-        logger.info(`URL: ${zeus.getUrl(result.download_url)}`);
-      })
-      .catch(e => {
-        logger.error(`Artifact upload failed: ${e.message}`);
-        process.exitCode = 1;
-      });
+      return promise
+        .then(result => {
+          logger.info('Artifact upload completed');
+          logger.info(`URL: ${zeus.getUrl(result.download_url)}`);
+        })
+        .catch(e => {
+          logger.error(`Artifact upload failed: ${e.message}`);
+          process.exitCode = 1;
+        });
+    });
+
+    return Promise.all(uploads);
   },
 };

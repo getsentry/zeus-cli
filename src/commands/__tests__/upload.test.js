@@ -17,7 +17,7 @@ describe('upload command', () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
-    fs.existsSync.mockImplementation(name => name === 'existing.json');
+    fs.existsSync.mockImplementation(name => /existing.*\.json/.test(name));
 
     Zeus.instance.uploadArtifact.mockImplementation(() =>
       Promise.resolve({
@@ -29,7 +29,7 @@ describe('upload command', () => {
 
   test('uploads the artifact', () => {
     const argv = {
-      file: 'existing.json',
+      file: ['existing.json'],
       build: '12345',
       job: '54321',
       type: 'application/json',
@@ -41,9 +41,23 @@ describe('upload command', () => {
     });
   });
 
+  test('uploads multiple artifacts', () => {
+    const argv = {
+      file: ['existing1.json', 'existing2.json'],
+      build: '12345',
+      job: '54321',
+      type: 'application/json',
+    };
+
+    expect.assertions(1);
+    return command.handler(argv).then(() => {
+      expect(Zeus.instance.uploadArtifact.mock.calls).toMatchSnapshot();
+    });
+  });
+
   test('logs the artifact download URL', () => {
     const argv = {
-      file: 'existing.json',
+      file: ['existing.json'],
       build: '12345',
       job: '54321',
       type: 'application/json',
@@ -59,7 +73,7 @@ describe('upload command', () => {
   test('uses the build ID from the environment', () => {
     environment.buildId = '12345';
     const argv = {
-      file: 'existing.json',
+      file: ['existing.json'],
       job: '54321',
       type: 'application/json',
     };
@@ -73,7 +87,7 @@ describe('upload command', () => {
   test('uses the build ID from the environment', () => {
     environment.jobId = '54321';
     const argv = {
-      file: 'existing.json',
+      file: ['existing.json'],
       build: '12345',
       type: 'application/json',
     };
@@ -86,7 +100,7 @@ describe('upload command', () => {
 
   test('logs an error for missing files', () => {
     const argv = {
-      file: 'invalid.json',
+      file: ['invalid.json'],
       build: '12345',
       job: '54321',
       type: 'application/json',
@@ -100,7 +114,7 @@ describe('upload command', () => {
 
   test('logs errors from the SDK', () => {
     const argv = {
-      file: 'existing.json',
+      file: ['existing.json'],
       build: '12345',
       job: '54321',
       type: 'application/json',

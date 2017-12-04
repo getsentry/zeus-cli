@@ -1,5 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`upload command uploads multiple artifacts 1`] = `
+Array [
+  Array [
+    Object {
+      "build": "12345",
+      "file": Object {
+        "path": "existing1.json",
+      },
+      "job": "54321",
+      "type": "application/json",
+    },
+  ],
+  Array [
+    Object {
+      "build": "12345",
+      "file": Object {
+        "path": "existing2.json",
+      },
+      "job": "54321",
+      "type": "application/json",
+    },
+  ],
+]
+`;
+
 exports[`upload command uploads the artifact 1`] = `
 Array [
   Object {
