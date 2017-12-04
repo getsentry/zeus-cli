@@ -1,6 +1,6 @@
 {
   "name": "@zeus-ci/cli",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "CLI for https://zeus.ci",
   "main": "src/index.js",
   "repository": "https://github.com/getsentry/zeus-cli",
