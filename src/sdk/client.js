@@ -121,18 +121,25 @@ class Client {
    * method should be removed again.
    *
    * @param {string} path The endpoint of the API call
-   * @param {FormData} data Request body form data
+   * @param {object} data Key value pairs to be posted to the server
    * @returns {Promise<object>} The parsed server response
    */
   postForm(path, data) {
+    const form = new FormData();
+    Object.keys(data).forEach(key => {
+      if (data[key] != null) {
+        form.append(key, data[key]);
+      }
+    });
+
     return new Promise((resolve, reject) => {
       /* istanbul ignore next */
-      data.getLength((e, length) => (e ? reject(e) : resolve(length)));
+      form.getLength((e, length) => (e ? reject(e) : resolve(length)));
     }).then(length =>
       this.request(path, {
-        headers: data.getHeaders({ 'Content-Length': `${length}` }),
+        headers: form.getHeaders({ 'Content-Length': `${length}` }),
         method: 'POST',
-        body: data,
+        body: form,
       })
     );
   }
@@ -157,18 +164,12 @@ class Client {
         throw new Error('Missing file parameter');
       }
 
-      const data = new FormData();
-      data.append('file', params.file);
-      if (params.type) {
-        data.append('type', params.type);
-      }
-
       const url = new URL(
         `builds/${params.build}/jobs/${params.job}/artifacts`,
         sanitizeURL(base)
       ).toString();
 
-      return this.postForm(url, data);
+      return this.postForm(url, { file: params.file, type: params.type });
     } catch (e) {
       return Promise.reject(e);
     }
