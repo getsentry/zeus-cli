@@ -94,10 +94,10 @@ variable. This requires a hook to be configured in the repository settings. In
 future versions, this will be replaced with the default authorization tokens.
 
 ```text
-zeus upload <file>
+zeus upload <file...>
 
 Positionals:
-  file  Path to the artifact                                 [string] [required]
+  file  Path to the artifact                    [array] [required] [default: []]
 
 Options:
   --url          Fully qualified URL to the Zeus server                 [string]
