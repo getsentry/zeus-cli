@@ -39,8 +39,8 @@ options:
 zeus <command>
 
 Commands:
-  zeus upload <file>  Upload a build artifact                       [aliases: u]
-  zeus completion     generate bash completion script
+  zeus upload <file...>  Upload build artifacts                     [aliases: u]
+  zeus completion        generate bash completion script
 
 Options:
   --url          Fully qualified URL to the Zeus server                 [string]
@@ -115,6 +115,9 @@ zeus upload coverage.xml
 
 # With explicit mime type
 zeus upload -t 'text/xml+coverage' coverage.xml
+
+# Multiple files
+zeus upload -t 'application/javascript' build/**/*.js
 
 # On a custom build server
 zeus upload -b $MY_BUILD_ID -j $MY_JOB_ID -t 'text/xml+coverage' coverage.xml
