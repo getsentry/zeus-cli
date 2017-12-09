@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.4.3
+
+* Fix invalid download URL after upload
+
 ## v0.4.2
 
 * Support multiple files in one upload command
