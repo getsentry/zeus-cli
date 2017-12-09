@@ -200,20 +200,18 @@ describe('Client', () => {
       });
     });
 
-    test('uploads multiple files', () => {
-      expect.assertions(1);
-      params.file = ['FIRST_FILE', 'SECOND_FILE'];
-      return client.uploadArtifact(params).then(() => {
-        expect(request.mock.calls).toMatchSnapshot();
-      });
-    });
-
     test('accepts ZEUS_HOOK_BASE without trailing slash', () => {
       expect.assertions(1);
       process.env.ZEUS_HOOK_BASE = 'https://example.org/hooks/feedbeef';
       return client.uploadArtifact(params).then(() => {
         expect(request.mock.calls[0]).toMatchSnapshot();
       });
+    });
+
+    test('resolves the server response', () => {
+      const data = { id: 4711, download_url: '/foo/bar' };
+      request.mockReturnValue(Promise.resolve(data));
+      return expect(client.uploadArtifact(params)).resolves.toEqual(data);
     });
 
     test('rejects without parameters', () =>

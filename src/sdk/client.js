@@ -169,9 +169,10 @@ class Client {
         sanitizeURL(base)
       ).toString();
 
-      const type = params.type;
-      const files = Array.isArray(params.file) ? params.file : [params.file];
-      return Promise.all(files.map(file => this.postForm(url, { file, type })));
+      return this.postForm(url, {
+        file: params.file,
+        type: params.type,
+      });
     } catch (e) {
       return Promise.reject(e);
     }
