@@ -11,6 +11,10 @@ describe('Client', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     request.mockReturnValue(Promise.resolve({ some: 'data' }));
+
+    // This causes some issues in Node 9.4.0 inside jest
+    // eslint-disable-next-line no-console
+    console.debug = function noop() {};
   });
 
   describe('constructor', () => {
