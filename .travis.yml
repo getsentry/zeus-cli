@@ -18,6 +18,7 @@ matrix:
         - zeus upload -t "application/tar+npm" *.tgz
 
 if: tag IS blank
+install: yarn --ignore-engines
 
 notifications:
   webhooks:
