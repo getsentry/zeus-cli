@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.4.4
+
+* Detect the build environment in Buildkite
+
 ## v0.4.3
 
 * Fix invalid download URL after upload
