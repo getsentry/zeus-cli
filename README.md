@@ -78,6 +78,7 @@ paramters. These systems are:
 
 * Travis CI
 * AppVeyor
+* Buildkite
 
 ### Uploading Artifacts
 

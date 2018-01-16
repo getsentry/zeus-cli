@@ -38,7 +38,7 @@ xdescribe('environment', () => {
     expect(env).toEqual({ id: 'travis', buildId: '12345', jobId: '54321' });
   });
 
-  test('detects travis', () => {
+  test('detects appveyor', () => {
     process.env = {
       APPVEYOR: 'True',
       APPVEYOR_BUILD_ID: '6d8442adc6ead41c4118',
@@ -50,6 +50,21 @@ xdescribe('environment', () => {
       id: 'appveyor',
       buildId: '6d8442adc6ead41c4118',
       jobId: 'c5d4d0c1c430cde5b291',
+    });
+  });
+
+  test('detects buildkite', () => {
+    process.env = {
+      BUILDKITE: 'true',
+      BUILDKITE_BUILD_ID: '9e08ef3c-d6e6-4a86-91dd-577ce5205b8e',
+      BUILDKITE_JOB_ID: 'e44f9784-e20e-4b93-a21d-f41fd5869db9',
+    };
+
+    const env = require('../environment');
+    expect(env).toEqual({
+      id: 'buildkite',
+      buildId: '9e08ef3c-d6e6-4a86-91dd-577ce5205b8e',
+      jobId: 'e44f9784-e20e-4b93-a21d-f41fd5869db9',
     });
   });
 });
