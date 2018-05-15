@@ -33,6 +33,7 @@ describe('upload command', () => {
       build: '12345',
       job: '54321',
       type: 'application/json',
+      name: 'renamed.json',
     };
 
     expect.assertions(1);
@@ -47,6 +48,7 @@ describe('upload command', () => {
       build: '12345',
       job: '54321',
       type: 'application/json',
+      name: 'renamed.json',
     };
 
     expect.assertions(1);
@@ -61,6 +63,7 @@ describe('upload command', () => {
       build: '12345',
       job: '54321',
       type: 'application/json',
+      name: 'renamed.json',
     };
 
     expect.assertions(1);
@@ -89,6 +92,20 @@ describe('upload command', () => {
     const argv = {
       file: ['existing.json'],
       build: '12345',
+      type: 'application/json',
+    };
+
+    expect.assertions(1);
+    return command.handler(argv).then(() => {
+      expect(Zeus.instance.uploadArtifact.mock.calls[0]).toMatchSnapshot();
+    });
+  });
+
+  test('uses an empty filename by default', () => {
+    const argv = {
+      file: ['existing.json'],
+      build: '12345',
+      job: '54321',
       type: 'application/json',
     };
 

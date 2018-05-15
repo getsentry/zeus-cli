@@ -20,6 +20,11 @@ module.exports = {
         type: 'string',
         alias: 'type',
       })
+      .option('n', {
+        description: 'Artifact name to use in place of the filename',
+        type: 'string',
+        alias: 'name',
+      })
       .option('j', {
         description: 'Unique id of the job in CI',
         type: 'string',
@@ -40,6 +45,7 @@ module.exports = {
             build: argv.build || env.buildId,
             job: argv.job || env.jobId,
             file: fs.createReadStream(file),
+            name: argv.name,
             type: argv.type,
           });
 

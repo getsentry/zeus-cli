@@ -6,7 +6,10 @@ Array [
   Object {
     "body": FormData {
       "data": Object {
-        "some": "data",
+        "some": Object {
+          "options": undefined,
+          "value": "data",
+        },
       },
       "options": undefined,
     },
@@ -25,7 +28,10 @@ Array [
   Object {
     "body": FormData {
       "data": Object {
-        "some": "data",
+        "some": Object {
+          "options": undefined,
+          "value": "data",
+        },
       },
       "options": undefined,
     },
@@ -98,7 +104,10 @@ Array [
   Object {
     "body": FormData {
       "data": Object {
-        "file": "FILE_DATA",
+        "file": Object {
+          "options": undefined,
+          "value": "FILE_DATA",
+        },
       },
       "options": undefined,
     },
@@ -121,14 +130,42 @@ exports[`Client uploadArtifact rejects without the file parameter 1`] = `[Error:
 
 exports[`Client uploadArtifact rejects without the job parameter 1`] = `[Error: Missing job identifier]`;
 
+exports[`Client uploadArtifact uploads a file with explicit name 1`] = `
+Array [
+  "https://example.org/hooks/feedbeef/builds/12345/jobs/54321/artifacts",
+  Object {
+    "body": FormData {
+      "data": Object {
+        "file": Object {
+          "options": "renamed.json",
+          "value": "FILE_DATA",
+        },
+      },
+      "options": undefined,
+    },
+    "headers": Object {
+      "Content-Length": "42",
+      "content-type": "multipart/form-data; boundary=---feedface",
+    },
+    "method": "POST",
+  },
+]
+`;
+
 exports[`Client uploadArtifact uploads a file with explicit type 1`] = `
 Array [
   "https://example.org/hooks/feedbeef/builds/12345/jobs/54321/artifacts",
   Object {
     "body": FormData {
       "data": Object {
-        "file": "FILE_DATA",
-        "type": "text/plain",
+        "file": Object {
+          "options": undefined,
+          "value": "FILE_DATA",
+        },
+        "type": Object {
+          "options": undefined,
+          "value": "text/plain",
+        },
       },
       "options": undefined,
     },
@@ -147,7 +184,10 @@ Array [
   Object {
     "body": FormData {
       "data": Object {
-        "file": "FILE_DATA",
+        "file": Object {
+          "options": undefined,
+          "value": "FILE_DATA",
+        },
       },
       "options": undefined,
     },

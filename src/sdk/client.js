@@ -1,6 +1,7 @@
 'use strict';
 
 const FormData = require('form-data');
+const util = require('util');
 const URL = require('whatwg-url').URL;
 const request = require('./request');
 
@@ -127,8 +128,13 @@ class Client {
   postForm(path, data) {
     const form = new FormData();
     Object.keys(data).forEach(key => {
-      if (data[key] != null) {
-        form.append(key, data[key]);
+      const value = data[key];
+      if (value != null) {
+        if (util.isArray(value)) {
+          form.append(key, value[0], value[1]);
+        } else {
+          form.append(key, value);
+        }
       }
     });
 
@@ -170,7 +176,7 @@ class Client {
       ).toString();
 
       return this.postForm(url, {
-        file: params.file,
+        file: [params.file, params.name],
         type: params.type,
       });
     } catch (e) {
