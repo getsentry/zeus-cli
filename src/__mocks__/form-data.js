@@ -9,8 +9,8 @@ module.exports = class FormData {
     this.data = {};
   }
 
-  append(field, value) {
-    this.data[field] = value;
+  append(field, value, options) {
+    this.data[field] = { value, options };
   }
 
   getHeaders(headers) {

@@ -204,6 +204,14 @@ describe('Client', () => {
       });
     });
 
+    test('uploads a file with explicit name', () => {
+      expect.assertions(1);
+      params.name = 'renamed.json';
+      return client.uploadArtifact(params).then(() => {
+        expect(request.mock.calls[0]).toMatchSnapshot();
+      });
+    });
+
     test('accepts ZEUS_HOOK_BASE without trailing slash', () => {
       expect.assertions(1);
       process.env.ZEUS_HOOK_BASE = 'https://example.org/hooks/feedbeef';

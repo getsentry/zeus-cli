@@ -9,6 +9,7 @@ Array [
         "path": "existing1.json",
       },
       "job": "54321",
+      "name": "renamed.json",
       "type": "application/json",
     },
   ],
@@ -19,6 +20,7 @@ Array [
         "path": "existing2.json",
       },
       "job": "54321",
+      "name": "renamed.json",
       "type": "application/json",
     },
   ],
@@ -33,6 +35,21 @@ Array [
       "path": "existing.json",
     },
     "job": "54321",
+    "name": "renamed.json",
+    "type": "application/json",
+  },
+]
+`;
+
+exports[`upload command uses an empty filename by default 1`] = `
+Array [
+  Object {
+    "build": "12345",
+    "file": Object {
+      "path": "existing.json",
+    },
+    "job": "54321",
+    "name": undefined,
     "type": "application/json",
   },
 ]
@@ -46,6 +63,7 @@ Array [
       "path": "existing.json",
     },
     "job": "54321",
+    "name": undefined,
     "type": "application/json",
   },
 ]
@@ -59,6 +77,7 @@ Array [
       "path": "existing.json",
     },
     "job": "54321",
+    "name": undefined,
     "type": "application/json",
   },
 ]
