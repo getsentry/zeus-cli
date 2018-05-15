@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.4.5
+
+* Allow to override the artifcat name during upload
+
 ## v0.4.4
 
 * Detect the build environment in Buildkite
