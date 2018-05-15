@@ -104,6 +104,7 @@ Options:
   --url          Fully qualified URL to the Zeus server                 [string]
   --token        Token for authorized access to Zeus                    [string]
   -t, --type     Mime type of the file to upload                        [string]
+  -n, --name     Artifact name to use in place of the filename          [string]
   -j, --job      Unique id of the job in CI                             [string]
   -b, --build    Unique id of the build in CI                           [string]
 ```

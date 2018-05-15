@@ -21,7 +21,7 @@ module.exports = {
         alias: 'type',
       })
       .option('n', {
-        description: 'Artiface to use in place of the filename',
+        description: 'Artifact name to use in place of the filename',
         type: 'string',
         alias: 'name',
       })
