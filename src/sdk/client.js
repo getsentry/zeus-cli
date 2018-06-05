@@ -61,6 +61,10 @@ class Client {
     this.token = o.token || process.env.ZEUS_TOKEN || '';
     this.logger = o.logger || console;
     this.logger.debug = this.logger.debug || function noop() {};
+    this.base = process.env.ZEUS_HOOK_BASE;
+    if (!this.base) {
+      throw new Error('Missing ZEUS_HOOK_BASE environment variable');
+    }
   }
 
   /**
@@ -157,12 +161,8 @@ class Client {
    * @returns {Promise<object>} The parsed server response
    */
   uploadArtifact(params) {
-    const base = process.env.ZEUS_HOOK_BASE;
-
     try {
-      if (!base) {
-        throw new Error('Missing ZEUS_HOOK_BASE environment variable');
-      } else if (!params.build) {
+      if (!params.build) {
         throw new Error('Missing build identifier');
       } else if (!params.job) {
         throw new Error('Missing job identifier');
@@ -172,12 +172,59 @@ class Client {
 
       const url = new URL(
         `builds/${params.build}/jobs/${params.job}/artifacts`,
-        sanitizeURL(base)
+        sanitizeURL(this.base)
       ).toString();
 
       return this.postForm(url, {
         file: [params.file, params.name],
         type: params.type,
+      });
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  }
+
+  addBuild(params) {
+    try {
+      if (!params.number) {
+        throw new Error('Missing build ID');
+      } else if (!params.ref) {
+        throw new Error('Missing build ref');
+      }
+
+      const url = new URL(
+        `builds/${params.number}`,
+        sanitizeURL(this.base)
+      ).toString();
+      this.logger.info(url);
+
+      return this.request(url, {
+        method: 'POST',
+        body: JSON.stringify(params),
+        headers: { 'Content-Type': 'application/json' },
+      });
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  }
+
+  addJob(params) {
+    try {
+      if (!params.number) {
+        throw new Error('Missing job ID');
+      } else if (!params.build) {
+        throw new Error('Missing build ID');
+      }
+      const url = new URL(
+        `builds/${params.build}/jobs/${params.number}`,
+        sanitizeURL(this.base)
+      ).toString();
+      this.logger.info(url);
+
+      return this.request(url, {
+        method: 'POST',
+        body: JSON.stringify(params),
+        headers: { 'Content-Type': 'application/json' },
       });
     } catch (e) {
       return Promise.reject(e);

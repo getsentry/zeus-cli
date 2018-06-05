@@ -20,6 +20,7 @@ require('yargs')
   .help()
   .alias('h', 'help')
   .completion()
+  .strict()
   .fail((message, _, yargs) => {
     logger.error(`${message}\n`);
     yargs.showHelp();
