@@ -189,6 +189,12 @@ class Client {
     }
   }
 
+  /**
+   * Creates or updates the remote build object.
+   *
+   * @param {object} params Parameters for the build
+   * @returns {Promise<object>} The parsed server response
+   */
   addBuild(params) {
     try {
       const base = getHookBase();
@@ -214,6 +220,12 @@ class Client {
     }
   }
 
+  /**
+   * Creates or updates the remote job object.
+   *
+   * @param {object} params Parameters for the job
+   * @returns {Promise<object>} The parsed server response
+   */
   addJob(params) {
     try {
       const base = getHookBase();

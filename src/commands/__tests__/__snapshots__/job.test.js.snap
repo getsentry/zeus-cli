@@ -11,6 +11,17 @@ Array [
 ]
 `;
 
+exports[`job add command uses the build ID from the environment 1`] = `
+Array [
+  Object {
+    "build": 2345,
+    "label": "New job",
+    "number": 12345,
+    "url": "https://invalid/job/1",
+  },
+]
+`;
+
 exports[`job add command uses the job ID from the environment 1`] = `
 Array [
   Object {

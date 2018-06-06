@@ -13,12 +13,15 @@ The official command line utility for [Zeus](https://github.com/getsentry/zeus).
 
 ## Table of Contents
 
-* [Installation](#installation)
-* [Usage](#usage)
-  * [Supported CI Systems](#supported-ci-systems)
-  * [Uploading Artifacts](#uploading-artifacts)
-  * [Bash Completion](#bash-completion)
-* [Development](#development)
+- [Table of Contents](#table-of-contents)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Supported CI Systems](#supported-ci-systems)
+  - [Working with Builds](#working-with-builds)
+  - [Working with Jobs](#working-with-jobs)
+  - [Uploading Artifacts](#uploading-artifacts)
+  - [Bash Completion](#bash-completion)
+- [Development](#development)
 
 ## Installation
 
@@ -39,6 +42,8 @@ options:
 zeus <command>
 
 Commands:
+  zeus build <command>   Manipulate builds                          [aliases: b]
+  zeus job <command>     Manipulate jobs                            [aliases: j]
   zeus upload <file...>  Upload build artifacts                     [aliases: u]
   zeus completion        generate bash completion script
 
@@ -55,11 +60,9 @@ the server is listening to. The value can also be provided via the `ZEUS_URL`
 environment variable. The command line option always takes precedence over the
 environment.
 
-Most commands require a token to authorize access. This can either be a personal
-token obtained from the [Account Settings Page](https://zeus.ci/settings/token)
-or a repository token obtained from the respective repository settings page. Use
-the `--token` parameter or `ZEUS_TOKEN` environment variable to provide the
-token.
+Most commands use the legacy `ZEUS_HOOK_BASE` environment
+variable. This requires a hook to be configured in the environment. In
+future versions, this will be replaced with the default authorization tokens.
 
 The CLI also supports reading environment variables from a `.env` file located
 in the current working directory. Note that command line parameters always
@@ -76,9 +79,72 @@ In some environments, the CLI is able to infer parameters like build or job
 numbers and commit hashes for you. In this case, you can omit the respective
 paramters. These systems are:
 
-* Travis CI
-* AppVeyor
-* Buildkite
+- Travis CI
+- AppVeyor
+- Buildkite
+
+### Working with Builds
+
+Create new or update existing builds in Zeus, providing a build ID and Git
+commit SHA hash. On supported CI systems, the build id is automatically inferred
+from the environment.
+
+```text
+zeus build add
+
+Add/update a build
+
+Options:
+  --url, -u      Custom URL                                             [string]
+  --token        Token for authorized access to Zeus                    [string]
+  --number, -n   Build ID                                    [number] [required]
+  --label, -l    Build label to use instead of commit message           [string]
+  --ref, -r      Git commit hash                             [string] [required]
+  -v, --version  Show version number                                   [boolean]
+  -h, --help     Show help                                             [boolean]
+```
+
+**Examples:**
+
+```sh
+# Create a new build if it doesn't exist
+zeus build add --number=123 --ref=1234567
+
+# Update the build's label
+zeus build add --number=123 --label='Fix everything'
+```
+
+### Working with Jobs
+
+Create new or update existing jobs in Zeus, providing a job ID and the
+corresponding build ID. The provided build must already exist (e.g. created
+via `zeus build add`). On supported CI systems, the job and build id are
+automatically inferred from the environment.
+
+```text
+zeus job add
+
+Add/update a job
+
+Options:
+  --url, -u      Custom URL                                             [string]
+  --token        Token for authorized access to Zeus                    [string]
+  --number, -n   Job ID                                      [number] [required]
+  --build, -b    Build ID                                    [number] [required]
+  --label, -l    Job label                                              [string]
+  -v, --version  Show version number                                   [boolean]
+  -h, --help     Show help                                             [boolean]
+```
+
+**Examples:**
+
+```sh
+# Create a new job in build number 234
+zeus job add --number=234 --build=123
+
+# Update the job's label and url
+zeus job add --number=234 --build=123 --url='https://travis-ci.org/org/repo/jobs/123' --label='New job'
+```
 
 ### Uploading Artifacts
 
@@ -89,10 +155,6 @@ inferred from the environment.
 Optionally, you can specify a mime type to classify the artifact with `--type`.
 This is used to hint Zeus how the artifact should be processed. By default, the
 mime type is inferred from the file name.
-
-**NOTE:** This command still uses the legacy `ZEUS_HOOK_BASE` environment
-variable. This requires a hook to be configured in the repository settings. In
-future versions, this will be replaced with the default authorization tokens.
 
 ```text
 zeus upload <file...>

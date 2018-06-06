@@ -25,7 +25,7 @@ module.exports = {
     const zeus = new Zeus({ url: argv.url, token: argv.token, logger });
     const promise = zeus.addJob({
       number: argv.number || env.jobId,
-      build: argv.build,
+      build: argv.build || env.buildId,
       label: argv.label,
       url: argv.url,
     });
