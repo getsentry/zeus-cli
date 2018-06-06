@@ -45,6 +45,14 @@ function sanitizeURL(url) {
   return sanitized;
 }
 
+function getHookBase() {
+  const base = process.env.ZEUS_HOOK_BASE;
+  if (!base) {
+    throw new Error('Missing ZEUS_HOOK_BASE environment variable');
+  }
+  return base;
+}
+
 /**
  * Zeus API client
  */
@@ -61,10 +69,6 @@ class Client {
     this.token = o.token || process.env.ZEUS_TOKEN || '';
     this.logger = o.logger || console;
     this.logger.debug = this.logger.debug || function noop() {};
-    this.base = process.env.ZEUS_HOOK_BASE;
-    if (!this.base) {
-      throw new Error('Missing ZEUS_HOOK_BASE environment variable');
-    }
   }
 
   /**
@@ -162,6 +166,7 @@ class Client {
    */
   uploadArtifact(params) {
     try {
+      const base = getHookBase();
       if (!params.build) {
         throw new Error('Missing build identifier');
       } else if (!params.job) {
@@ -172,7 +177,7 @@ class Client {
 
       const url = new URL(
         `builds/${params.build}/jobs/${params.job}/artifacts`,
-        sanitizeURL(this.base)
+        sanitizeURL(base)
       ).toString();
 
       return this.postForm(url, {
@@ -186,6 +191,7 @@ class Client {
 
   addBuild(params) {
     try {
+      const base = getHookBase();
       if (!params.number) {
         throw new Error('Missing build ID');
       } else if (!params.ref) {
@@ -194,7 +200,7 @@ class Client {
 
       const url = new URL(
         `builds/${params.number}`,
-        sanitizeURL(this.base)
+        sanitizeURL(base)
       ).toString();
       this.logger.info(url);
 
@@ -210,6 +216,7 @@ class Client {
 
   addJob(params) {
     try {
+      const base = getHookBase();
       if (!params.number) {
         throw new Error('Missing job ID');
       } else if (!params.build) {
@@ -217,7 +224,7 @@ class Client {
       }
       const url = new URL(
         `builds/${params.build}/jobs/${params.number}`,
-        sanitizeURL(this.base)
+        sanitizeURL(base)
       ).toString();
       this.logger.info(url);
 

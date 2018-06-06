@@ -29,11 +29,20 @@ module.exports = {
 
   handler: argv => {
     const zeus = new Zeus({ url: argv.url, token: argv.token, logger });
-    zeus.addBuild({
+    const promise = zeus.addBuild({
       number: argv.number || env.buildId,
       label: argv.label,
       ref: argv.ref,
       url: argv.url,
     });
+
+    return promise
+      .then(() => {
+        logger.info('Build updated');
+      })
+      .catch(e => {
+        logger.error(`Build update failed: ${e.message}`);
+        process.exitCode = 1;
+      });
   },
 };

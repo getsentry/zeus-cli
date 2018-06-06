@@ -87,7 +87,7 @@ describe('upload command', () => {
     });
   });
 
-  test('uses the build ID from the environment', () => {
+  test('uses the job ID from the environment', () => {
     environment.jobId = '54321';
     const argv = {
       file: ['existing.json'],

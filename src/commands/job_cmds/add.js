@@ -11,7 +11,7 @@ module.exports = {
   builder: /* istanbul ignore next */ yargs =>
     yargs
       .option('label', {
-        description: 'Build label to use instead of commit message',
+        description: 'Job label',
         type: 'string',
         alias: 'l',
       })
@@ -23,11 +23,20 @@ module.exports = {
 
   handler: argv => {
     const zeus = new Zeus({ url: argv.url, token: argv.token, logger });
-    zeus.addJob({
+    const promise = zeus.addJob({
       number: argv.number || env.jobId,
       build: argv.build,
       label: argv.label,
       url: argv.url,
     });
+
+    return promise
+      .then(() => {
+        logger.info('Job updated');
+      })
+      .catch(e => {
+        logger.error(`Job update failed: ${e.message}`);
+        process.exitCode = 1;
+      });
   },
 };
