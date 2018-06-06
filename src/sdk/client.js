@@ -198,17 +198,14 @@ class Client {
   addBuild(params) {
     try {
       const base = getHookBase();
-      if (!params.number) {
+      if (!params.build) {
         throw new Error('Missing build ID');
-      } else if (!params.ref) {
-        throw new Error('Missing build ref');
       }
 
       const url = new URL(
-        `builds/${params.number}`,
+        `builds/${params.build}`,
         sanitizeURL(base)
       ).toString();
-      this.logger.info(url);
 
       return this.request(url, {
         method: 'POST',
@@ -229,22 +226,26 @@ class Client {
   addJob(params) {
     try {
       const base = getHookBase();
-      if (!params.number) {
+      if (!params.job) {
         throw new Error('Missing job ID');
       } else if (!params.build) {
         throw new Error('Missing build ID');
       }
+
+      const addBuildPromise = this.addBuild(params);
+
       const url = new URL(
-        `builds/${params.build}/jobs/${params.number}`,
+        `builds/${params.build}/jobs/${params.job}`,
         sanitizeURL(base)
       ).toString();
-      this.logger.info(url);
 
-      return this.request(url, {
-        method: 'POST',
-        body: JSON.stringify(params),
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return addBuildPromise.then(() =>
+        this.request(url, {
+          method: 'POST',
+          body: JSON.stringify(params),
+          headers: { 'Content-Type': 'application/json' },
+        })
+      );
     } catch (e) {
       return Promise.reject(e);
     }

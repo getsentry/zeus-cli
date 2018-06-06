@@ -4,8 +4,10 @@ exports[`job add command adds a new job 1`] = `
 Array [
   Object {
     "build": undefined,
-    "label": "New job",
-    "number": 1,
+    "build_label": undefined,
+    "job": undefined,
+    "job_label": undefined,
+    "ref": undefined,
     "url": "https://invalid/job/1",
   },
 ]
@@ -15,8 +17,23 @@ exports[`job add command uses the build ID from the environment 1`] = `
 Array [
   Object {
     "build": 2345,
-    "label": "New job",
-    "number": 12345,
+    "build_label": undefined,
+    "job": 12345,
+    "job_label": undefined,
+    "ref": undefined,
+    "url": "https://invalid/job/1",
+  },
+]
+`;
+
+exports[`job add command uses the commit ID from the environment 1`] = `
+Array [
+  Object {
+    "build": 2345,
+    "build_label": undefined,
+    "job": 12345,
+    "job_label": undefined,
+    "ref": "1234567",
     "url": "https://invalid/job/1",
   },
 ]
@@ -26,8 +43,10 @@ exports[`job add command uses the job ID from the environment 1`] = `
 Array [
   Object {
     "build": undefined,
-    "label": "New job",
-    "number": 12345,
+    "build_label": undefined,
+    "job": 12345,
+    "job_label": undefined,
+    "ref": undefined,
     "url": "https://invalid/job/1",
   },
 ]

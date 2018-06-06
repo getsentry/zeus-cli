@@ -1,19 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Client addBuild adds new build 1`] = `
-Object {
-  "some": "data",
-}
-`;
-
-exports[`Client addBuild rejects an invalid ZEUS_HOOK_BASE 1`] = `[TypeError: Invalid URL]`;
-
-exports[`Client addBuild rejects without ZEUS_HOOK_BASE 1`] = `[Error: Missing ZEUS_HOOK_BASE environment variable]`;
-
-exports[`Client addBuild rejects without the build parameter 1`] = `[Error: Missing build ID]`;
-
-exports[`Client addBuild rejects without the ref parameter 1`] = `[Error: Missing build ref]`;
-
 exports[`Client addJob adds new job 1`] = `
 Object {
   "some": "data",

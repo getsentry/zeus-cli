@@ -6,16 +6,16 @@ module.exports = {
 
   builder: /* istanbul ignore next */ yargs =>
     yargs
-      .option('number', {
-        description: 'Job ID',
+      .option('job', {
+        description: 'Job id',
         type: 'number',
-        alias: 'n',
+        alias: 'j',
       })
       .option('build', {
-        description: 'Build ID',
+        description: 'Build id',
         type: 'number',
         alias: 'b',
       })
-      .demandOption(['number', 'build'])
+      .demandOption(['job', 'build'])
       .commandDir('job_cmds'),
 };

@@ -17,8 +17,7 @@ The official command line utility for [Zeus](https://github.com/getsentry/zeus).
 - [Installation](#installation)
 - [Usage](#usage)
   - [Supported CI Systems](#supported-ci-systems)
-  - [Working with Builds](#working-with-builds)
-  - [Working with Jobs](#working-with-jobs)
+  - [Updating Jobs](#updating-jobs)
   - [Uploading Artifacts](#uploading-artifacts)
   - [Bash Completion](#bash-completion)
 - [Development](#development)
@@ -83,43 +82,15 @@ paramters. These systems are:
 - AppVeyor
 - Buildkite
 
-### Working with Builds
-
-Create new or update existing builds in Zeus, providing a build ID and Git
-commit SHA hash. On supported CI systems, the build id is automatically inferred
-from the environment.
-
-```text
-zeus build add
-
-Add/update a build
-
-Options:
-  --url, -u      Custom URL                                             [string]
-  --token        Token for authorized access to Zeus                    [string]
-  --number, -n   Build ID                                    [number] [required]
-  --label, -l    Build label to use instead of commit message           [string]
-  --ref, -r      Git commit hash                             [string] [required]
-  -v, --version  Show version number                                   [boolean]
-  -h, --help     Show help                                             [boolean]
-```
-
-**Examples:**
-
-```sh
-# Create a new build if it doesn't exist
-zeus build add --number=123 --ref=1234567
-
-# Update the build's label
-zeus build add --number=123 --label='Fix everything'
-```
-
-### Working with Jobs
+### Updating Jobs
 
 Create new or update existing jobs in Zeus, providing a job ID and the
-corresponding build ID. The provided build must already exist (e.g. created
-via `zeus build add`). On supported CI systems, the job and build id are
-automatically inferred from the environment.
+corresponding build ID. If the provided build does not exist, it will be
+created. On supported CI systems, the job and build id are automatically
+inferred from the environment.
+
+**Note:** if the corresponding build does not exist, you must provide `--ref`
+attribute, otherwise Zeus will fail to create the build.
 
 ```text
 zeus job add
@@ -127,13 +98,15 @@ zeus job add
 Add/update a job
 
 Options:
-  --url, -u      Custom URL                                             [string]
-  --token        Token for authorized access to Zeus                    [string]
-  --number, -n   Job ID                                      [number] [required]
-  --build, -b    Build ID                                    [number] [required]
-  --label, -l    Job label                                              [string]
-  -v, --version  Show version number                                   [boolean]
-  -h, --help     Show help                                             [boolean]
+  --url, -u            Custom URL                                       [string]
+  --token              Token for authorized access to Zeus              [string]
+  --job, -j            Job id                                [number] [required]
+  --build, -b          Build id                              [number] [required]
+  --ref, -r            Commit hash                                      [string]
+  --build-label, --bl  Custom build label                               [string]
+  --job-label, --jl    Custom job label                                 [string]
+  -v, --version        Show version number                             [boolean]
+  -h, --help           Show help                                       [boolean]
 ```
 
 **Examples:**

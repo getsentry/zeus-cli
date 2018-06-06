@@ -10,23 +10,35 @@ module.exports = {
 
   builder: /* istanbul ignore next */ yargs =>
     yargs
-      .option('label', {
-        description: 'Job label',
-        type: 'string',
-        alias: 'l',
-      })
       .option('url', {
         description: 'Custom URL',
         type: 'string',
         alias: 'u',
+      })
+      .option('ref', {
+        description: 'Commit hash',
+        type: 'string',
+        alias: 'r',
+      })
+      .option('build-label', {
+        description: 'Custom build label',
+        type: 'string',
+        alias: 'bl',
+      })
+      .option('job-label', {
+        description: 'Custom job label',
+        type: 'string',
+        alias: 'jl',
       }),
 
   handler: argv => {
     const zeus = new Zeus({ url: argv.url, token: argv.token, logger });
     const promise = zeus.addJob({
-      number: argv.number || env.jobId,
+      job: argv.job || env.jobId,
       build: argv.build || env.buildId,
-      label: argv.label,
+      ref: argv.ref || env.commitId,
+      job_label: argv['job-label'],
+      build_label: argv['build-label'],
       url: argv.url,
     });
 

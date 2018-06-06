@@ -56,6 +56,19 @@ describe('job add command', () => {
     });
   });
 
+  test('uses the commit ID from the environment', () => {
+    environment.commitId = '1234567';
+    const argv = {
+      label: 'New job',
+      url: 'https://invalid/job/1',
+    };
+
+    expect.assertions(1);
+    return commandAdd.handler(argv).then(() => {
+      expect(Zeus.instance.addJob.mock.calls[0]).toMatchSnapshot();
+    });
+  });
+
   test('logs the successful job update', () => {
     expect.assertions(1);
     return commandAdd.handler({}).then(() => {
