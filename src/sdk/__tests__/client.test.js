@@ -255,4 +255,96 @@ describe('Client', () => {
       return expect(client.uploadArtifact(params)).rejects.toMatchSnapshot();
     });
   });
+
+  describe('addBuild', () => {
+    const env = Object.assign({}, process.env);
+    let params;
+    let client;
+    let func;
+
+    beforeEach(() => {
+      process.env.ZEUS_HOOK_BASE = 'https://invalid/hooks/feedbeef/';
+      request.mockReturnValue(Promise.resolve({ some: 'data' }));
+      params = {
+        number: 1234,
+        ref: '0000000',
+        label: 'First build',
+        url: 'https://invalid/build/1234',
+      };
+      client = new Client({});
+      func = client.addBuild.bind(client);
+    });
+
+    afterEach(() => {
+      process.env = Object.assign({}, env);
+    });
+
+    test('adds new build', () =>
+      expect(func(params)).resolves.toMatchSnapshot());
+
+    test('rejects without ZEUS_HOOK_BASE', () => {
+      delete process.env.ZEUS_HOOK_BASE;
+      return expect(func(params)).rejects.toMatchSnapshot();
+    });
+
+    test('rejects an invalid ZEUS_HOOK_BASE', () => {
+      process.env.ZEUS_HOOK_BASE = '///';
+      return expect(func(params)).rejects.toMatchSnapshot();
+    });
+
+    test('rejects without the build parameter', () => {
+      delete params.number;
+      return expect(func(params)).rejects.toMatchSnapshot();
+    });
+
+    test('rejects without the ref parameter', () => {
+      delete params.ref;
+      return expect(func(params)).rejects.toMatchSnapshot();
+    });
+  });
+
+  describe('addJob', () => {
+    const env = Object.assign({}, process.env);
+    let func;
+    let params;
+    let client;
+
+    beforeEach(() => {
+      process.env.ZEUS_HOOK_BASE = 'https://invalid/hooks/feedbeef/';
+      request.mockReturnValue(Promise.resolve({ some: 'data' }));
+      params = {
+        number: 1234,
+        build: 2345,
+        label: 'First build',
+        url: 'https://invalid/build/1234',
+      };
+      client = new Client({});
+      func = client.addJob.bind(client);
+    });
+
+    afterEach(() => {
+      process.env = Object.assign({}, env);
+    });
+
+    test('adds new job', () => expect(func(params)).resolves.toMatchSnapshot());
+
+    test('rejects without ZEUS_HOOK_BASE', () => {
+      delete process.env.ZEUS_HOOK_BASE;
+      return expect(func(params)).rejects.toMatchSnapshot();
+    });
+
+    test('rejects an invalid ZEUS_HOOK_BASE', () => {
+      process.env.ZEUS_HOOK_BASE = '///';
+      return expect(func(params)).rejects.toMatchSnapshot();
+    });
+    test('rejects without the job parameter', () => {
+      delete params.number;
+      return expect(func(params)).rejects.toMatchSnapshot();
+    });
+
+    test('rejects without the build parameter', () => {
+      delete params.build;
+      return expect(func(params)).rejects.toMatchSnapshot();
+    });
+  });
 });
