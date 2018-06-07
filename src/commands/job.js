@@ -17,6 +17,5 @@ module.exports = {
         alias: 'b',
       })
       .required(1)
-      .demandOption(['job', 'build'])
       .commandDir('job_cmds'),
 };
