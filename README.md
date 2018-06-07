@@ -11,9 +11,8 @@
 
 The official command line utility for [Zeus](https://github.com/getsentry/zeus).
 
-## Table of Contents
+## Table of Contents <!-- omit in toc -->
 
-- [Table of Contents](#table-of-contents)
 - [Installation](#installation)
 - [Usage](#usage)
   - [Supported CI Systems](#supported-ci-systems)
@@ -41,7 +40,6 @@ options:
 zeus <command>
 
 Commands:
-  zeus build <command>   Manipulate builds                          [aliases: b]
   zeus job <command>     Manipulate jobs                            [aliases: j]
   zeus upload <file...>  Upload build artifacts                     [aliases: u]
   zeus completion        generate bash completion script
@@ -103,25 +101,28 @@ Options:
   --job, -j            Job id                                [number] [required]
   --build, -b          Build id                              [number] [required]
   --ref, -r            Commit hash                                      [string]
-  --build-label, --bl  Custom build label                               [string]
-  --job-label, --jl    Custom job label                                 [string]
+  --build-label, -B    Custom build label                               [string]
+  --job-label, -J      Custom job label                                 [string]
   --status, -s         Job execution status
                                [string] [choices: "pending", "passed", "failed"]
-  -v, --version        Show version number                             [boolean]
-  -h, --help           Show help                                       [boolean]
 ```
 
 **Examples:**
 
 ```sh
-# Create a new job in build number 234
-zeus job update --number=234 --build=123
+# Create job 234 in build number 123
+zeus job update --job=234 --build=123 --ref=0123456
 
 # Update job's label and url
-zeus job update --number=234 --build=123 --url='https://travis-ci.org/org/repo/jobs/123' --label='New job'
+zeus job update --job=234 --build=123 --url='https://travis-ci.org/org/repo/jobs/123' --label='New job'
 
 # Set job's status to 'passed'
-zeus job update --number=234 --build=123 --status=passed
+zeus job update --job=234 --build=123 --status=passed
+
+# On supported CI systems one can omit build, job, and commit IDs
+zeus job update --status=passed
+# ...will have the same effect as this, if run on Travis:
+zeus job update --status=passed -b "$TRAVIS_BUILD_ID" -j "$TRAVIS_JOB_ID" -r "$TRAVIS_COMMIT"
 ```
 
 ### Uploading Artifacts

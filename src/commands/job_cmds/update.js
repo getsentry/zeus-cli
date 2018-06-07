@@ -23,12 +23,12 @@ module.exports = {
       .option('build-label', {
         description: 'Custom build label',
         type: 'string',
-        alias: 'bl',
+        alias: 'B',
       })
       .option('job-label', {
         description: 'Custom job label',
         type: 'string',
-        alias: 'jl',
+        alias: 'J',
       })
       .option('status', {
         description: 'Job execution status',
@@ -39,7 +39,8 @@ module.exports = {
 
   handler: argv => {
     const zeus = new Zeus({ url: argv.url, token: argv.token, logger });
-    const promise = zeus.createOrUpdateJob({
+
+    const params = {
       job: argv.job || env.jobId,
       build: argv.build || env.buildId,
       ref: argv.ref || env.commitId,
@@ -47,9 +48,11 @@ module.exports = {
       buildLabel: argv['build-label'],
       url: argv.url,
       status: argv.status,
-    });
+    };
 
-    return promise
+    return zeus
+      .createOrUpdateBuild(params)
+      .then(() => zeus.createOrUpdateJob(params))
       .then(() => {
         logger.info('Job updated');
       })

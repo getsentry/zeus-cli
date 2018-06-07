@@ -290,16 +290,12 @@ class Client {
    */
   createOrUpdateJob(params) {
     try {
+      const jobParams = Object.assign({}, params);
       const base = getHookBase();
-      if (!params.job) {
+      if (!jobParams.job) {
         throw new Error('Missing job ID');
-      } else if (!params.build) {
-        throw new Error('Missing build ID');
       }
 
-      const addBuildPromise = this.createOrUpdateBuild(params);
-
-      const jobParams = Object.assign({}, params);
       jobParams.label = jobParams.jobLabel;
 
       // Deal with statuses. Zeus has knowledge about both  'result' and
@@ -336,12 +332,10 @@ class Client {
         }
       });
 
-      return addBuildPromise.then(() =>
-        this.requestJson(url, {
-          method: 'POST',
-          body: jobParams,
-        })
-      );
+      return this.requestJson(url, {
+        method: 'POST',
+        body: jobParams,
+      });
     } catch (e) {
       return Promise.reject(e);
     }

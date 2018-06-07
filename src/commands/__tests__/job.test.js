@@ -16,6 +16,10 @@ describe('job add command', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    Zeus.instance.createOrUpdateBuild = jest.fn();
+    Zeus.instance.createOrUpdateBuild.mockImplementation(() =>
+      Promise.resolve({})
+    );
     Zeus.instance.createOrUpdateJob = jest.fn();
     Zeus.instance.createOrUpdateJob.mockImplementation(() =>
       Promise.resolve({})
