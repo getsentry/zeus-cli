@@ -69,7 +69,7 @@ Array [
 ]
 `;
 
-exports[`upload command uses the build ID from the environment 2`] = `
+exports[`upload command uses the job ID from the environment 1`] = `
 Array [
   Object {
     "build": "12345",

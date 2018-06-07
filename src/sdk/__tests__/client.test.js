@@ -255,4 +255,116 @@ describe('Client', () => {
       return expect(client.uploadArtifact(params)).rejects.toMatchSnapshot();
     });
   });
+
+  describe('createOrUpdateBuild', () => {
+    const env = Object.assign({}, process.env);
+    let func;
+    let params;
+    let client;
+
+    beforeEach(() => {
+      process.env.ZEUS_HOOK_BASE = 'https://invalid/hooks/feedbeef/';
+      request.mockReturnValue(Promise.resolve({ some: 'data' }));
+      params = {
+        build: 1234,
+        url: 'https://ci/build/1234',
+      };
+      client = new Client({});
+      func = client.createOrUpdateBuild.bind(client);
+    });
+
+    afterEach(() => {
+      process.env = Object.assign({}, env);
+    });
+
+    test('adds new build', () =>
+      expect(func(params)).resolves.toMatchSnapshot());
+
+    test('rejects without the build parameter', () => {
+      delete params.build;
+      return expect(func(params)).rejects.toThrowError(/build id/i);
+    });
+
+    test('rejects without ZEUS_HOOK_BASE', () => {
+      delete process.env.ZEUS_HOOK_BASE;
+      return expect(func(params)).rejects.toThrowError('ZEUS_HOOK_BASE');
+    });
+
+    test('passes build label properly', () => {
+      params.buildLabel = 'new build label';
+      expect.assertions(1);
+      return func(params).then(() => {
+        expect(request.mock.calls[0]).toMatchSnapshot();
+      });
+    });
+
+    test('strips invalid build attributes', () => {
+      params.invalidAttribute = 'test';
+      expect.assertions(1);
+      return func(params).then(() => {
+        console.log(request.mock.calls);
+        expect(request.mock.calls[0]).toMatchSnapshot();
+      });
+    });
+  });
+
+  describe('createOrUpdateJob', () => {
+    const env = Object.assign({}, process.env);
+    let func;
+    let params;
+    let client;
+
+    beforeEach(() => {
+      process.env.ZEUS_HOOK_BASE = 'https://invalid/hooks/feedbeef/';
+      request.mockReturnValue(Promise.resolve({ some: 'data' }));
+      params = {
+        build: 1234,
+        job: 2345,
+        url: 'https://ci/build/1234',
+      };
+      client = new Client({});
+      func = client.createOrUpdateJob.bind(client);
+    });
+
+    afterEach(() => {
+      process.env = Object.assign({}, env);
+    });
+
+    test('adds new job', () => expect(func(params)).resolves.toMatchSnapshot());
+
+    test('rejects without ZEUS_HOOK_BASE', () => {
+      delete process.env.ZEUS_HOOK_BASE;
+      return expect(func(params)).rejects.toThrowError('ZEUS_HOOK_BASE');
+    });
+
+    test('rejects an invalid ZEUS_HOOK_BASE', () => {
+      process.env.ZEUS_HOOK_BASE = '///';
+      return expect(func(params)).rejects.toThrowError(/invalid url/i);
+    });
+    test('rejects without the job parameter', () => {
+      delete params.job;
+      return expect(func(params)).rejects.toThrowError(/job id/i);
+    });
+
+    test('rejects with invalid job status', () => {
+      params.status = 'invalid-status';
+      return expect(func(params)).rejects.toThrowError(params.status);
+    });
+
+    test('passes job label properly', () => {
+      params.jobLabel = 'new job label';
+      expect.assertions(1);
+      return func(params).then(() => {
+        expect(request.mock.calls[0]).toMatchSnapshot();
+      });
+    });
+
+    test('strips invalid job attributes', () => {
+      params.invalidAttribute = 'test';
+      expect.assertions(1);
+      return func(params).then(() => {
+        expect(request.mock.calls[0]).toMatchSnapshot();
+      });
+    });
+  });
 });

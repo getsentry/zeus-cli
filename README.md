@@ -11,14 +11,15 @@
 
 The official command line utility for [Zeus](https://github.com/getsentry/zeus).
 
-## Table of Contents
+## Table of Contents <!-- omit in toc -->
 
-* [Installation](#installation)
-* [Usage](#usage)
-  * [Supported CI Systems](#supported-ci-systems)
-  * [Uploading Artifacts](#uploading-artifacts)
-  * [Bash Completion](#bash-completion)
-* [Development](#development)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Supported CI Systems](#supported-ci-systems)
+  - [Updating Jobs](#updating-jobs)
+  - [Uploading Artifacts](#uploading-artifacts)
+  - [Bash Completion](#bash-completion)
+- [Development](#development)
 
 ## Installation
 
@@ -39,6 +40,7 @@ options:
 zeus <command>
 
 Commands:
+  zeus job <command>     Manipulate jobs                            [aliases: j]
   zeus upload <file...>  Upload build artifacts                     [aliases: u]
   zeus completion        generate bash completion script
 
@@ -55,11 +57,9 @@ the server is listening to. The value can also be provided via the `ZEUS_URL`
 environment variable. The command line option always takes precedence over the
 environment.
 
-Most commands require a token to authorize access. This can either be a personal
-token obtained from the [Account Settings Page](https://zeus.ci/settings/token)
-or a repository token obtained from the respective repository settings page. Use
-the `--token` parameter or `ZEUS_TOKEN` environment variable to provide the
-token.
+Most commands use the legacy `ZEUS_HOOK_BASE` environment
+variable. This requires a hook to be configured in the environment. In
+future versions, this will be replaced with the default authorization tokens.
 
 The CLI also supports reading environment variables from a `.env` file located
 in the current working directory. Note that command line parameters always
@@ -76,9 +76,54 @@ In some environments, the CLI is able to infer parameters like build or job
 numbers and commit hashes for you. In this case, you can omit the respective
 paramters. These systems are:
 
-* Travis CI
-* AppVeyor
-* Buildkite
+- Travis CI
+- AppVeyor
+- Buildkite
+
+### Updating Jobs
+
+Create new or update existing jobs in Zeus, providing a job ID and the
+corresponding build ID. If the provided build does not exist, it will be
+created. On supported CI systems, the job and build id are automatically
+inferred from the environment.
+
+**Note:** if the corresponding build does not exist, you must provide `--ref`
+attribute, otherwise Zeus will fail to create the build.
+
+```text
+zeus job update
+
+Add/update a job
+
+Options:
+  --url, -u            Custom URL                                       [string]
+  --token              Token for authorized access to Zeus              [string]
+  --job, -j            Job id                                [number] [required]
+  --build, -b          Build id                              [number] [required]
+  --ref, -r            Commit hash                                      [string]
+  --build-label, -B    Custom build label                               [string]
+  --job-label, -J      Custom job label                                 [string]
+  --status, -s         Job execution status
+                               [string] [choices: "pending", "passed", "failed"]
+```
+
+**Examples:**
+
+```sh
+# Create job 234 in build number 123
+zeus job update --job=234 --build=123 --ref=0123456
+
+# Update job's label and url
+zeus job update --job=234 --build=123 --url='https://travis-ci.org/org/repo/jobs/123' --label='New job'
+
+# Set job's status to 'passed'
+zeus job update --job=234 --build=123 --status=passed
+
+# On supported CI systems one can omit build, job, and commit IDs
+zeus job update --status=passed
+# ...will have the same effect as this, if run on Travis:
+zeus job update --status=passed -b "$TRAVIS_BUILD_ID" -j "$TRAVIS_JOB_ID" -r "$TRAVIS_COMMIT"
+```
 
 ### Uploading Artifacts
 
@@ -89,10 +134,6 @@ inferred from the environment.
 Optionally, you can specify a mime type to classify the artifact with `--type`.
 This is used to hint Zeus how the artifact should be processed. By default, the
 mime type is inferred from the file name.
-
-**NOTE:** This command still uses the legacy `ZEUS_HOOK_BASE` environment
-variable. This requires a hook to be configured in the repository settings. In
-future versions, this will be replaced with the default authorization tokens.
 
 ```text
 zeus upload <file...>

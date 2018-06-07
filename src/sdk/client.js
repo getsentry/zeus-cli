@@ -11,6 +11,25 @@ const request = require('./request');
 const DEFAULT_URL = 'https://zeus.ci/';
 
 /**
+ * Job statuses that we accept
+ */
+const JOB_STATUSES = {
+  PENDING: 'pending',
+  PASSED: 'passed',
+  FAILED: 'failed',
+};
+
+/**
+ * Job attributes used by Zeus
+ */
+const JOB_ATTRIBUTES = ['url', 'label', 'ref', 'status', 'result'];
+
+/**
+ * Build attributes accepted by Zeus
+ */
+const BUILD_ATTRIBUTES = ['url', 'label', 'ref'];
+
+/**
  * @typedef {object} Logger A console logger
  *
  * @prop {function} log Logs a message with the default level
@@ -43,6 +62,19 @@ function sanitizeURL(url) {
   }
 
   return sanitized;
+}
+
+/**
+ * Extracts ZEUS_HOOK_BASE URL from the environment or raises an error.
+ *
+ * @returns {string} The Zeus hook base
+ */
+function getHookBase() {
+  const base = process.env.ZEUS_HOOK_BASE;
+  if (!base) {
+    throw new Error('Missing ZEUS_HOOK_BASE environment variable');
+  }
+  return base;
 }
 
 /**
@@ -111,6 +143,38 @@ class Client {
   }
 
   /**
+   * Convert body to JSON and performs an API request to the given path.
+   *
+   * Null/undefined values in request body are stripped, and then the body
+   * is serialized to JSON.
+   *
+   * @param {string} path The endpoint of the API call.
+   * @param {object} options_ Options to the {@link fetch} call.
+   * @returns {Promise<object>} A Promise to the parsed response body.
+   */
+  requestJson(path, options_) {
+    const options = Object.assign({}, options_);
+    options.headers = Object.assign(
+      { 'Content-Type': 'application/json' },
+      options.headers || {}
+    );
+
+    // Clear null values from body
+    Object.keys(options.body).forEach(key => {
+      if (options.body[key] == null) {
+        delete options.body[key];
+      }
+    });
+
+    return this.request(
+      path,
+      Object.assign({}, options, {
+        body: JSON.stringify(options.body),
+      })
+    );
+  }
+
+  /**
    * Posts the given form the the specified endpoint
    *
    * This prevents requests with chunked transfer encoding by specifying
@@ -157,12 +221,9 @@ class Client {
    * @returns {Promise<object>} The parsed server response
    */
   uploadArtifact(params) {
-    const base = process.env.ZEUS_HOOK_BASE;
-
     try {
-      if (!base) {
-        throw new Error('Missing ZEUS_HOOK_BASE environment variable');
-      } else if (!params.build) {
+      const base = getHookBase();
+      if (!params.build) {
         throw new Error('Missing build identifier');
       } else if (!params.job) {
         throw new Error('Missing job identifier');
@@ -183,7 +244,104 @@ class Client {
       return Promise.reject(e);
     }
   }
+
+  /**
+   * Creates or updates the remote build object.
+   *
+   * @param {object} params Parameters for the build
+   * @returns {Promise<object>} The parsed server response
+   */
+  createOrUpdateBuild(params) {
+    try {
+      const buildParams = Object.assign({}, params);
+      const base = getHookBase();
+      if (!buildParams.build) {
+        throw new Error('Missing build ID');
+      }
+
+      buildParams.label = buildParams.buildLabel;
+
+      const url = new URL(
+        `builds/${buildParams.build}`,
+        sanitizeURL(base)
+      ).toString();
+
+      // Remove non-Zeus keys
+      Object.keys(buildParams).forEach(key => {
+        if (!BUILD_ATTRIBUTES.includes(key)) {
+          delete buildParams[key];
+        }
+      });
+
+      return this.requestJson(url, {
+        method: 'POST',
+        body: buildParams,
+      });
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  }
+
+  /**
+   * Creates or updates the remote job object.
+   *
+   * @param {object} params Parameters for the job
+   * @returns {Promise<object>} The parsed server response
+   */
+  createOrUpdateJob(params) {
+    try {
+      const jobParams = Object.assign({}, params);
+      const base = getHookBase();
+      if (!jobParams.job) {
+        throw new Error('Missing job ID');
+      }
+
+      jobParams.label = jobParams.jobLabel;
+
+      // Deal with statuses. Zeus has knowledge about both  'result' and
+      // 'status' for every job, bu`t to make it easier for end user we'll
+      // allow to specify only a handful of unified 'statuses'
+      switch (jobParams.status) {
+        case JOB_STATUSES.PENDING:
+          jobParams.status = 'in_progress';
+          jobParams.result = 'unknown';
+          break;
+        case JOB_STATUSES.PASSED:
+          jobParams.status = 'finished';
+          jobParams.result = 'passed';
+          break;
+        case JOB_STATUSES.FAILED:
+          jobParams.status = 'finished';
+          jobParams.result = 'failed';
+          break;
+        case undefined:
+          break;
+        default:
+          throw new Error(`Invalid job status: "${jobParams.status}"`);
+      }
+
+      const url = new URL(
+        `builds/${jobParams.build}/jobs/${jobParams.job}`,
+        sanitizeURL(base)
+      ).toString();
+
+      // Remove non-Zeus keys
+      Object.keys(jobParams).forEach(key => {
+        if (!JOB_ATTRIBUTES.includes(key)) {
+          delete jobParams[key];
+        }
+      });
+
+      return this.requestJson(url, {
+        method: 'POST',
+        body: jobParams,
+      });
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  }
 }
 
 module.exports = Client;
 Client.DEFAULT_URL = DEFAULT_URL;
+Client.JOB_STATUSES = JOB_STATUSES;

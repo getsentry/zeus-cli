@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`job add command adds a new job 1`] = `
+Array [
+  Object {
+    "build": 1,
+    "buildLabel": "New job",
+    "job": undefined,
+    "jobLabel": undefined,
+    "ref": undefined,
+    "status": undefined,
+    "url": "https://invalid/job/1",
+  },
+]
+`;
+
+exports[`job add command uses the build ID from the environment 1`] = `
+Array [
+  Object {
+    "build": 2345,
+    "buildLabel": undefined,
+    "job": 12345,
+    "jobLabel": undefined,
+    "ref": undefined,
+    "status": undefined,
+    "url": undefined,
+  },
+]
+`;
+
+exports[`job add command uses the commit ID from the environment 1`] = `
+Array [
+  Object {
+    "build": 2345,
+    "buildLabel": undefined,
+    "job": 12345,
+    "jobLabel": undefined,
+    "ref": "1234567",
+    "status": undefined,
+    "url": undefined,
+  },
+]
+`;
+
+exports[`job add command uses the job ID from the environment 1`] = `
+Array [
+  Object {
+    "build": undefined,
+    "buildLabel": undefined,
+    "job": 12345,
+    "jobLabel": undefined,
+    "ref": undefined,
+    "status": undefined,
+    "url": undefined,
+  },
+]
+`;
