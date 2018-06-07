@@ -93,7 +93,7 @@ inferred from the environment.
 attribute, otherwise Zeus will fail to create the build.
 
 ```text
-zeus job add
+zeus job update
 
 Add/update a job
 
@@ -105,6 +105,8 @@ Options:
   --ref, -r            Commit hash                                      [string]
   --build-label, --bl  Custom build label                               [string]
   --job-label, --jl    Custom job label                                 [string]
+  --status, -s         Job execution status
+                               [string] [choices: "pending", "passed", "failed"]
   -v, --version        Show version number                             [boolean]
   -h, --help           Show help                                       [boolean]
 ```
@@ -113,10 +115,13 @@ Options:
 
 ```sh
 # Create a new job in build number 234
-zeus job add --number=234 --build=123
+zeus job update --number=234 --build=123
 
-# Update the job's label and url
-zeus job add --number=234 --build=123 --url='https://travis-ci.org/org/repo/jobs/123' --label='New job'
+# Update job's label and url
+zeus job update --number=234 --build=123 --url='https://travis-ci.org/org/repo/jobs/123' --label='New job'
+
+# Set job's status to 'passed'
+zeus job update --number=234 --build=123 --status=passed
 ```
 
 ### Uploading Artifacts

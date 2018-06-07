@@ -10,14 +10,23 @@ const request = require('./request');
  */
 const DEFAULT_URL = 'https://zeus.ci/';
 
+/**
+ * Job statuses that we accept
+ */
 const JOB_STATUSES = {
   PENDING: 'pending',
   PASSED: 'passed',
   FAILED: 'failed',
 };
 
+/**
+ * Job attributes used by Zeus
+ */
 const JOB_ATTRIBUTES = ['url', 'label', 'ref', 'status', 'result'];
 
+/**
+ * Build attributes accepted by Zeus
+ */
 const BUILD_ATTRIBUTES = ['url', 'label', 'ref'];
 
 /**
@@ -133,6 +142,16 @@ class Client {
     }
   }
 
+  /**
+   * Convert body to JSON and performs an API request to the given path.
+   *
+   * Null/undefined values in request body are stripped, and then the body
+   * is serialized to JSON.
+   *
+   * @param {string} path The endpoint of the API call.
+   * @param {object} options_ Options to the {@link fetch} call.
+   * @returns {Promise<object>} A Promise to the parsed response body.
+   */
   requestJson(path, options_) {
     const options = Object.assign({}, options_);
     options.headers = Object.assign(

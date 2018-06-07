@@ -5,7 +5,7 @@ const logger = require('../../logger');
 const Zeus = require('../../sdk');
 
 module.exports = {
-  command: ['add', 'a'],
+  command: ['update', 'u'],
   description: 'Add/update a job',
 
   builder: /* istanbul ignore next */ yargs =>

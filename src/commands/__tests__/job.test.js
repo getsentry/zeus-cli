@@ -2,7 +2,7 @@
 
 /* eslint-env jest */
 
-const commandAdd = require('../job_cmds/add');
+const commandUpdate = require('../job_cmds/update');
 const environment = require('../../environment');
 const logger = require('../../logger');
 const Zeus = require('../../sdk');
@@ -31,7 +31,7 @@ describe('job add command', () => {
     };
 
     expect.assertions(1);
-    return commandAdd.handler(argv).then(() => {
+    return commandUpdate.handler(argv).then(() => {
       expect(func.mock.calls[0]).toMatchSnapshot();
     });
   });
@@ -41,7 +41,7 @@ describe('job add command', () => {
     const argv = {};
 
     expect.assertions(1);
-    return commandAdd.handler(argv).then(() => {
+    return commandUpdate.handler(argv).then(() => {
       expect(func.mock.calls[0]).toMatchSnapshot();
     });
   });
@@ -51,7 +51,7 @@ describe('job add command', () => {
     const argv = {};
 
     expect.assertions(1);
-    return commandAdd.handler(argv).then(() => {
+    return commandUpdate.handler(argv).then(() => {
       expect(func.mock.calls[0]).toMatchSnapshot();
     });
   });
@@ -61,14 +61,14 @@ describe('job add command', () => {
     const argv = {};
 
     expect.assertions(1);
-    return commandAdd.handler(argv).then(() => {
+    return commandUpdate.handler(argv).then(() => {
       expect(func.mock.calls[0]).toMatchSnapshot();
     });
   });
 
   test('logs the successful job update', () => {
     expect.assertions(1);
-    return commandAdd.handler({}).then(() => {
+    return commandUpdate.handler({}).then(() => {
       const successMessage = 'Job updated';
       expect(logger).toHaveBeenCalledWith(
         expect.stringMatching(successMessage)
@@ -82,7 +82,7 @@ describe('job add command', () => {
     );
 
     expect.assertions(1);
-    return commandAdd.handler({}).then(() => {
+    return commandUpdate.handler({}).then(() => {
       expect(logger).toHaveBeenCalledWith(
         expect.stringMatching(/expected failure/)
       );
