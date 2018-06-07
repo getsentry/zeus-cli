@@ -10,6 +10,16 @@ const request = require('./request');
  */
 const DEFAULT_URL = 'https://zeus.ci/';
 
+const JOB_STATUSES = {
+  PENDING: 'pending',
+  PASSED: 'passed',
+  FAILED: 'failed',
+};
+
+const JOB_ATTRIBUTES = ['url', 'label', 'ref', 'status', 'result'];
+
+const BUILD_ATTRIBUTES = ['url', 'label', 'ref'];
+
 /**
  * @typedef {object} Logger A console logger
  *
@@ -45,6 +55,11 @@ function sanitizeURL(url) {
   return sanitized;
 }
 
+/**
+ * Extracts ZEUS_HOOK_BASE URL from the environment or raises an error.
+ *
+ * @returns {string} The Zeus hook base
+ */
 function getHookBase() {
   const base = process.env.ZEUS_HOOK_BASE;
   if (!base) {
@@ -116,6 +131,28 @@ class Client {
     } catch (e) {
       return Promise.reject(e);
     }
+  }
+
+  requestJson(path, options_) {
+    const options = Object.assign({}, options_);
+    options.headers = Object.assign(
+      { 'Content-Type': 'application/json' },
+      options.headers || {}
+    );
+
+    // Clear null values from body
+    Object.keys(options.body).forEach(key => {
+      if (options.body[key] == null) {
+        delete options.body[key];
+      }
+    });
+
+    return this.request(
+      path,
+      Object.assign({}, options, {
+        body: JSON.stringify(options.body),
+      })
+    );
   }
 
   /**
@@ -195,22 +232,31 @@ class Client {
    * @param {object} params Parameters for the build
    * @returns {Promise<object>} The parsed server response
    */
-  addBuild(params) {
+  createOrUpdateBuild(params) {
     try {
+      const buildParams = Object.assign({}, params);
       const base = getHookBase();
-      if (!params.build) {
+      if (!buildParams.build) {
         throw new Error('Missing build ID');
       }
 
+      buildParams.label = buildParams.buildLabel;
+
       const url = new URL(
-        `builds/${params.build}`,
+        `builds/${buildParams.build}`,
         sanitizeURL(base)
       ).toString();
 
-      return this.request(url, {
+      // Remove non-Zeus keys
+      Object.keys(buildParams).forEach(key => {
+        if (!BUILD_ATTRIBUTES.includes(key)) {
+          delete buildParams[key];
+        }
+      });
+
+      return this.requestJson(url, {
         method: 'POST',
-        body: JSON.stringify(params),
-        headers: { 'Content-Type': 'application/json' },
+        body: buildParams,
       });
     } catch (e) {
       return Promise.reject(e);
@@ -223,7 +269,7 @@ class Client {
    * @param {object} params Parameters for the job
    * @returns {Promise<object>} The parsed server response
    */
-  addJob(params) {
+  createOrUpdateJob(params) {
     try {
       const base = getHookBase();
       if (!params.job) {
@@ -232,18 +278,49 @@ class Client {
         throw new Error('Missing build ID');
       }
 
-      const addBuildPromise = this.addBuild(params);
+      const addBuildPromise = this.createOrUpdateBuild(params);
+
+      const jobParams = Object.assign({}, params);
+      jobParams.label = jobParams.jobLabel;
+
+      // Deal with statuses. Zeus has knowledge about both  'result' and
+      // 'status' for every job, bu`t to make it easier for end user we'll
+      // allow to specify only a handful of unified 'statuses'
+      switch (jobParams.status) {
+        case JOB_STATUSES.PENDING:
+          jobParams.status = 'in_progress';
+          jobParams.result = 'unknown';
+          break;
+        case JOB_STATUSES.PASSED:
+          jobParams.status = 'finished';
+          jobParams.result = 'passed';
+          break;
+        case JOB_STATUSES.FAILED:
+          jobParams.status = 'finished';
+          jobParams.result = 'failed';
+          break;
+        case undefined:
+          break;
+        default:
+          throw new Error(`Invalid job status: "${jobParams.status}"`);
+      }
 
       const url = new URL(
-        `builds/${params.build}/jobs/${params.job}`,
+        `builds/${jobParams.build}/jobs/${jobParams.job}`,
         sanitizeURL(base)
       ).toString();
 
+      // Remove non-Zeus keys
+      Object.keys(jobParams).forEach(key => {
+        if (!JOB_ATTRIBUTES.includes(key)) {
+          delete jobParams[key];
+        }
+      });
+
       return addBuildPromise.then(() =>
-        this.request(url, {
+        this.requestJson(url, {
           method: 'POST',
-          body: JSON.stringify(params),
-          headers: { 'Content-Type': 'application/json' },
+          body: jobParams,
         })
       );
     } catch (e) {
@@ -254,3 +331,4 @@ class Client {
 
 module.exports = Client;
 Client.DEFAULT_URL = DEFAULT_URL;
+Client.JOB_STATUSES = JOB_STATUSES;

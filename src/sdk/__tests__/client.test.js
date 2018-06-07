@@ -256,7 +256,7 @@ describe('Client', () => {
     });
   });
 
-  describe('addJob', () => {
+  describe('createOrUpdateJob', () => {
     const env = Object.assign({}, process.env);
     let func;
     let params;
@@ -268,11 +268,10 @@ describe('Client', () => {
       params = {
         build: 1234,
         job: 2345,
-        label: 'First build',
         url: 'https://invalid/build/1234',
       };
       client = new Client({});
-      func = client.addJob.bind(client);
+      func = client.createOrUpdateJob.bind(client);
     });
 
     afterEach(() => {
@@ -283,21 +282,49 @@ describe('Client', () => {
 
     test('rejects without ZEUS_HOOK_BASE', () => {
       delete process.env.ZEUS_HOOK_BASE;
-      return expect(func(params)).rejects.toMatchSnapshot();
+      return expect(func(params)).rejects.toThrowError('ZEUS_HOOK_BASE');
     });
 
     test('rejects an invalid ZEUS_HOOK_BASE', () => {
       process.env.ZEUS_HOOK_BASE = '///';
-      return expect(func(params)).rejects.toMatchSnapshot();
+      return expect(func(params)).rejects.toThrowError(/invalid url/i);
     });
     test('rejects without the job parameter', () => {
       delete params.job;
-      return expect(func(params)).rejects.toMatchSnapshot();
+      return expect(func(params)).rejects.toThrowError(/job id/i);
     });
 
     test('rejects without the build parameter', () => {
       delete params.build;
-      return expect(func(params)).rejects.toMatchSnapshot();
+      return expect(func(params)).rejects.toThrowError(/build id/i);
+    });
+
+    test('rejects with invalid status', () => {
+      params.status = 'invalid-status';
+      return expect(func(params)).rejects.toThrowError(params.status);
+    });
+
+    test('passes job label properly', () => {
+      params.jobLabel = 'new job label';
+      expect.assertions(1);
+      return func(params).then(() => {
+        expect(request.mock.calls[1]).toMatchSnapshot();
+      });
+    });
+    test('passes build label properly', () => {
+      params.buildLabel = 'new build label';
+      expect.assertions(1);
+      return func(params).then(() => {
+        expect(request.mock.calls[0]).toMatchSnapshot();
+      });
+    });
+
+    test('strips invalid attributes', () => {
+      params.invalidAttribute = 'test';
+      expect.assertions(1);
+      return func(params).then(() => {
+        expect(request.mock.calls[0]).toMatchSnapshot();
+      });
     });
   });
 });

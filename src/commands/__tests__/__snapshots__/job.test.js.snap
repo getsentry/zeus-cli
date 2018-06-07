@@ -3,11 +3,12 @@
 exports[`job add command adds a new job 1`] = `
 Array [
   Object {
-    "build": undefined,
-    "build_label": undefined,
+    "build": 1,
+    "buildLabel": "New job",
     "job": undefined,
-    "job_label": undefined,
+    "jobLabel": undefined,
     "ref": undefined,
+    "status": undefined,
     "url": "https://invalid/job/1",
   },
 ]
@@ -17,11 +18,12 @@ exports[`job add command uses the build ID from the environment 1`] = `
 Array [
   Object {
     "build": 2345,
-    "build_label": undefined,
+    "buildLabel": undefined,
     "job": 12345,
-    "job_label": undefined,
+    "jobLabel": undefined,
     "ref": undefined,
-    "url": "https://invalid/job/1",
+    "status": undefined,
+    "url": undefined,
   },
 ]
 `;
@@ -30,11 +32,12 @@ exports[`job add command uses the commit ID from the environment 1`] = `
 Array [
   Object {
     "build": 2345,
-    "build_label": undefined,
+    "buildLabel": undefined,
     "job": 12345,
-    "job_label": undefined,
+    "jobLabel": undefined,
     "ref": "1234567",
-    "url": "https://invalid/job/1",
+    "status": undefined,
+    "url": undefined,
   },
 ]
 `;
@@ -43,11 +46,12 @@ exports[`job add command uses the job ID from the environment 1`] = `
 Array [
   Object {
     "build": undefined,
-    "build_label": undefined,
+    "buildLabel": undefined,
     "job": 12345,
-    "job_label": undefined,
+    "jobLabel": undefined,
     "ref": undefined,
-    "url": "https://invalid/job/1",
+    "status": undefined,
+    "url": undefined,
   },
 ]
 `;

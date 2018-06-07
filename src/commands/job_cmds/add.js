@@ -29,17 +29,24 @@ module.exports = {
         description: 'Custom job label',
         type: 'string',
         alias: 'jl',
+      })
+      .option('status', {
+        description: 'Job execution status',
+        type: 'string',
+        choices: Object.values(Zeus.JOB_STATUSES),
+        alias: 's',
       }),
 
   handler: argv => {
     const zeus = new Zeus({ url: argv.url, token: argv.token, logger });
-    const promise = zeus.addJob({
+    const promise = zeus.createOrUpdateJob({
       job: argv.job || env.jobId,
       build: argv.build || env.buildId,
       ref: argv.ref || env.commitId,
-      job_label: argv['job-label'],
-      build_label: argv['build-label'],
+      jobLabel: argv['job-label'],
+      buildLabel: argv['build-label'],
       url: argv.url,
+      status: argv.status,
     });
 
     return promise
