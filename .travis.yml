@@ -4,6 +4,10 @@ cache: yarn
 git:
   depth: 1
 
+branches:
+  only:
+    - master
+
 node_js:
   - "node"
   - "8"

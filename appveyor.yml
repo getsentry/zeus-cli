@@ -1,0 +1,36 @@
+branches:
+  only:
+    - master
+
+environment:
+  nodejs_version: "lts"
+  ZEUS_HOOK_BASE:
+    secure: dcqtt6sxxBV0tDkXmPZOyzEZSDuBcNI71NuCASGeOZNCWip4tbVjoPMZWN2v+6H2Bz0xWtUuZEnEA0FR/QUYvGS9irtUD0881cXGjA0eKwMG+kbxgYs3Pw9N+sMhXQICKAzcosrLS5d3zzOQDSce/js36kZ4OgfmvVCYawl/8/8=
+
+build:
+  verbosity: minimal
+
+install:
+  - ps: Install-Product node $env:nodejs_version
+  - npm install -g yarn
+  - node --version
+  - npm --version
+  - yarn --version
+
+build_script:
+  - yarn install
+  - yarn start job update --status=pending 
+                          -B "%APPVEYOR_PULL_REQUEST_TITLE%" 
+                          -J "%APPVEYOR_JOB_NAME%"
+                          -u "%APPVEYOR_URL%/project/%APPVEYOR_ACCOUNT_NAME%/%APPVEYOR_PROJECT_SLUG%/%APPVEYOR_REPO_NAME%/build/%APPVEYOR_BUILD_VERSION%/job/%APPVEYOR_JOB_ID%"
+  - yarn pack
+
+test_script:
+  - yarn run test:jest
+  - yarn run test:eslint
+
+on_success:
+  - yarn start job update --status=passed
+
+on_failure:
+  - yarn start job update --status=failed
