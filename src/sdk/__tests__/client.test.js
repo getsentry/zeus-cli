@@ -302,7 +302,6 @@ describe('Client', () => {
       params.invalidAttribute = 'test';
       expect.assertions(1);
       return func(params).then(() => {
-        console.log(request.mock.calls);
         expect(request.mock.calls[0]).toMatchSnapshot();
       });
     });
