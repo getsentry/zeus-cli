@@ -12,6 +12,7 @@
     "fix:eslint": "eslint --fix src",
     "fix:prettier": "prettier --write 'src/**/*.js'",
     "fix": "npm-run-all fix:eslint fix:prettier",
+    "preversion": "yarn run test",
     "start": "node src",
     "test:jest": "jest",
     "test:eslint": "eslint src",

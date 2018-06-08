@@ -1,8 +1,12 @@
 # Changelog
 
+## v0.5.0
+
+* Add "job update" command to manipulate build jobs (#6)
+
 ## v0.4.5
 
-* Allow to override the artifcat name during upload
+* Allow to override the artifcat name during upload (#5)
 
 ## v0.4.4
 
