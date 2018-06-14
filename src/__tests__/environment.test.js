@@ -11,7 +11,7 @@
 // to prove actual compliance with their respective environments.
 
 // TODO: Enable once jest@21.3.0 is stable
-xdescribe('environment', () => {
+describe('environment', () => {
   const original = Object.assign({}, process.env);
 
   beforeEach(() => {

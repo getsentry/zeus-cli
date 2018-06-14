@@ -2891,8 +2891,8 @@ prettier-check@^2.0.0:
     execa "^0.6.0"
 
 prettier@^1.12.1:
-  version "1.13.4"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.13.4.tgz#31bbae6990f13b1093187c731766a14036fa72e6"
+  version "1.13.5"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.13.5.tgz#7ae2076998c8edce79d63834e9b7b09fead6bfd0"
 
 pretty-format@^22.4.0, pretty-format@^22.4.3:
   version "22.4.3"
@@ -3105,10 +3105,6 @@ request@^2.83.0:
     tough-cookie "~2.3.3"
     tunnel-agent "^0.6.0"
     uuid "^3.1.0"
-
-require-dir@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/require-dir/-/require-dir-1.0.0.tgz#c2639de72960ea1ee280279f2da35e03c6536b2d"
 
 require-directory@^2.1.1:
   version "2.1.1"
