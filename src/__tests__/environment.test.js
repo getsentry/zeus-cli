@@ -10,7 +10,6 @@
 // Also, we should start testing in all supported CI systems at some point
 // to prove actual compliance with their respective environments.
 
-// TODO: Enable once jest@21.3.0 is stable
 describe('environment', () => {
   const original = Object.assign({}, process.env);
 
@@ -23,6 +22,8 @@ describe('environment', () => {
   });
 
   test('returns an empty object by default', () => {
+    process.env = {};
+
     const env = require('../environment');
     expect(env).toEqual({});
   });
