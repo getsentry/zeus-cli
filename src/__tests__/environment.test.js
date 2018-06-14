@@ -48,20 +48,25 @@ describe('environment', () => {
   test('detects appveyor', () => {
     process.env = {
       APPVEYOR: 'True',
-      APPVEYOR_BUILD_ID: '6d8442adc6ead41c4118',
-      APPVEYOR_JOB_ID: 'c5d4d0c1c430cde5b291',
+      APPVEYOR_BUILD_ID: '6d8442',
+      APPVEYOR_JOB_ID: 'c5d4d',
       APPVEYOR_REPO_COMMIT: '10a4cbdce931233f55e20cf09538977123d00000',
       APPVEYOR_PULL_REQUEST_TITLE: 'pull request #1',
       APPVEYOR_JOB_NAME: 'job #1',
+      APPVEYOR_URL: 'https://appveyor',
+      APPVEYOR_ACCOUNT_NAME: 'sentry',
+      APPVEYOR_PROJECT_SLUG: 'zeus-cli',
+      APPVEYOR_BUILD_VERSION: '1.2.3',
     };
 
     expect(getEnv()).toEqual({
       id: 'appveyor',
-      buildId: '6d8442adc6ead41c4118',
-      jobId: 'c5d4d0c1c430cde5b291',
+      buildId: '6d8442',
+      jobId: 'c5d4d',
       commitId: '10a4cbdce931233f55e20cf09538977123d00000',
       buildLabel: 'pull request #1',
       jobLabel: 'job #1',
+      url: 'https://appveyor/project/sentry/zeus-cli/build/1.2.3/job/c5d4d',
     });
   });
 

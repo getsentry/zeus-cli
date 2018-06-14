@@ -47,7 +47,7 @@ module.exports = {
       ref: argv.ref || env.commitId,
       jobLabel: argv['job-label'] || env.jobLabel,
       buildLabel: argv['build-label'] || env.buildLabel,
-      url: argv.url,
+      url: argv.url || env.url,
       status: argv.status,
     };
 

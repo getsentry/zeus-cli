@@ -91,6 +91,16 @@ describe('job add command', () => {
     });
   });
 
+  test('uses the url from the environment', () => {
+    getEnv.mockReturnValue({ url: 'https://invalid/job/1' });
+    const argv = {};
+
+    expect.assertions(1);
+    return commandUpdate.handler(argv).then(() => {
+      expect(func.mock.calls[0]).toMatchSnapshot();
+    });
+  });
+
   test('logs the successful job update', () => {
     expect.assertions(1);
     return commandUpdate.handler({}).then(() => {

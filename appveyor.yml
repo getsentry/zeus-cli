@@ -20,7 +20,6 @@ install:
 build_script:
   - yarn install
   - yarn start job update --status=pending 
-                          -u "%APPVEYOR_URL%/project/%APPVEYOR_ACCOUNT_NAME%/%APPVEYOR_PROJECT_SLUG%/%APPVEYOR_REPO_NAME%/build/%APPVEYOR_BUILD_VERSION%/job/%APPVEYOR_JOB_ID%"
   - yarn pack
 
 test_script:
