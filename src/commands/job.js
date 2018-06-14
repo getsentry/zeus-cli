@@ -8,12 +8,12 @@ module.exports = {
     yargs
       .option('job', {
         description: 'Job id',
-        type: 'number',
+        type: 'string',
         alias: 'j',
       })
       .option('build', {
         description: 'Build id',
-        type: 'number',
+        type: 'string',
         alias: 'b',
       })
       .required(1)

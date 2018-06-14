@@ -3,7 +3,7 @@
 /* eslint-env jest */
 
 const commandUpdate = require('../job_cmds/update');
-const environment = require('../../environment');
+const getEnv = require('../../environment');
 const logger = require('../../logger');
 const Zeus = require('../../sdk');
 
@@ -25,6 +25,7 @@ describe('job add command', () => {
       Promise.resolve({})
     );
     func = Zeus.instance.createOrUpdateJob;
+    getEnv.mockReturnValue({});
   });
 
   test('adds a new job', () => {
@@ -41,7 +42,7 @@ describe('job add command', () => {
   });
 
   test('uses the job ID from the environment', () => {
-    environment.jobId = 12345;
+    getEnv.mockReturnValue({ jobId: 12345 });
     const argv = {};
 
     expect.assertions(1);
@@ -51,7 +52,7 @@ describe('job add command', () => {
   });
 
   test('uses the build ID from the environment', () => {
-    environment.buildId = 2345;
+    getEnv.mockReturnValue({ buildId: 2345 });
     const argv = {};
 
     expect.assertions(1);
@@ -61,7 +62,27 @@ describe('job add command', () => {
   });
 
   test('uses the commit ID from the environment', () => {
-    environment.commitId = '1234567';
+    getEnv.mockReturnValue({ commitId: '1234567' });
+    const argv = {};
+
+    expect.assertions(1);
+    return commandUpdate.handler(argv).then(() => {
+      expect(func.mock.calls[0]).toMatchSnapshot();
+    });
+  });
+
+  test('uses the build label from the environment', () => {
+    getEnv.mockReturnValue({ buildLabel: 'new build label' });
+    const argv = {};
+
+    expect.assertions(1);
+    return commandUpdate.handler(argv).then(() => {
+      expect(func.mock.calls[0]).toMatchSnapshot();
+    });
+  });
+
+  test('uses the job label from the environment', () => {
+    getEnv.mockReturnValue({ jobLabel: 'new job label' });
     const argv = {};
 
     expect.assertions(1);

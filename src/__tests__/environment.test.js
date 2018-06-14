@@ -3,6 +3,8 @@
 /* eslint-env jest */
 /* eslint-disable global-require */
 
+const getEnv = require('../environment');
+
 // Note that these tests are mostly useless as they duplicate the code in
 // `src/environments/`. However, we keep them here for now, so that people
 // start thinking about changes they make to the environments carefully.
@@ -24,8 +26,7 @@ describe('environment', () => {
   test('returns an empty object by default', () => {
     process.env = {};
 
-    const env = require('../environment');
-    expect(env).toEqual({});
+    expect(getEnv()).toEqual({});
   });
 
   test('detects travis', () => {
@@ -33,10 +34,15 @@ describe('environment', () => {
       TRAVIS: 'true',
       TRAVIS_BUILD_ID: '12345',
       TRAVIS_JOB_ID: '54321',
+      TRAVIS_COMMIT: '10a4cbdce931233f55e20cf09538977123d00000',
     };
 
-    const env = require('../environment');
-    expect(env).toEqual({ id: 'travis', buildId: '12345', jobId: '54321' });
+    expect(getEnv()).toEqual({
+      id: 'travis',
+      buildId: '12345',
+      jobId: '54321',
+      commitId: '10a4cbdce931233f55e20cf09538977123d00000',
+    });
   });
 
   test('detects appveyor', () => {
@@ -44,13 +50,18 @@ describe('environment', () => {
       APPVEYOR: 'True',
       APPVEYOR_BUILD_ID: '6d8442adc6ead41c4118',
       APPVEYOR_JOB_ID: 'c5d4d0c1c430cde5b291',
+      APPVEYOR_REPO_COMMIT: '10a4cbdce931233f55e20cf09538977123d00000',
+      APPVEYOR_PULL_REQUEST_TITLE: 'pull request #1',
+      APPVEYOR_JOB_NAME: 'job #1',
     };
 
-    const env = require('../environment');
-    expect(env).toEqual({
+    expect(getEnv()).toEqual({
       id: 'appveyor',
       buildId: '6d8442adc6ead41c4118',
       jobId: 'c5d4d0c1c430cde5b291',
+      commitId: '10a4cbdce931233f55e20cf09538977123d00000',
+      buildLabel: 'pull request #1',
+      jobLabel: 'job #1',
     });
   });
 
@@ -59,13 +70,14 @@ describe('environment', () => {
       BUILDKITE: 'true',
       BUILDKITE_BUILD_ID: '9e08ef3c-d6e6-4a86-91dd-577ce5205b8e',
       BUILDKITE_JOB_ID: 'e44f9784-e20e-4b93-a21d-f41fd5869db9',
+      BUILDKITE_COMMIT: '10a4cbdce931233f55e20cf09538977123d00000',
     };
 
-    const env = require('../environment');
-    expect(env).toEqual({
+    expect(getEnv()).toEqual({
       id: 'buildkite',
       buildId: '9e08ef3c-d6e6-4a86-91dd-577ce5205b8e',
       jobId: 'e44f9784-e20e-4b93-a21d-f41fd5869db9',
+      commitId: '10a4cbdce931233f55e20cf09538977123d00000',
     });
   });
 });

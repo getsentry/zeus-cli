@@ -1,6 +1,6 @@
 'use strict';
 
-const env = require('../../environment');
+const getEnv = require('../../environment');
 const logger = require('../../logger');
 const Zeus = require('../../sdk');
 
@@ -39,13 +39,14 @@ module.exports = {
 
   handler: argv => {
     const zeus = new Zeus({ url: argv.url, token: argv.token, logger });
+    const env = getEnv();
 
     const params = {
       job: argv.job || env.jobId,
       build: argv.build || env.buildId,
       ref: argv.ref || env.commitId,
-      jobLabel: argv['job-label'],
-      buildLabel: argv['build-label'],
+      jobLabel: argv['job-label'] || env.jobLabel,
+      buildLabel: argv['build-label'] || env.buildLabel,
       url: argv.url,
       status: argv.status,
     };
