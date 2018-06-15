@@ -1,6 +1,6 @@
 'use strict';
 
-const getEnv = require('../../environment');
+const getEnv = require('../../environment').getEnvironment;
 const logger = require('../../logger');
 const Zeus = require('../../sdk');
 

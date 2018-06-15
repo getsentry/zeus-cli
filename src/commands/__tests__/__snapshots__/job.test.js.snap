@@ -93,7 +93,7 @@ Array [
     "jobLabel": undefined,
     "ref": undefined,
     "status": undefined,
-    "url": "https://invalid/job/1",
+    "url": "https://appveyor/job/1",
   },
 ]
 `;

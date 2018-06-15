@@ -3,7 +3,7 @@
 /* eslint-env jest */
 
 const commandUpdate = require('../job_cmds/update');
-const getEnv = require('../../environment');
+const getEnv = require('../../environment').getEnvironment;
 const logger = require('../../logger');
 const Zeus = require('../../sdk');
 
@@ -25,10 +25,11 @@ describe('job add command', () => {
       Promise.resolve({})
     );
     func = Zeus.instance.createOrUpdateJob;
-    getEnv.mockReturnValue({});
   });
 
   test('adds a new job', () => {
+    getEnv.mockReturnValue({});
+
     const argv = {
       build: 1,
       'build-label': 'New job',
@@ -92,7 +93,7 @@ describe('job add command', () => {
   });
 
   test('uses the url from the environment', () => {
-    getEnv.mockReturnValue({ url: 'https://invalid/job/1' });
+    getEnv.mockReturnValue({ url: 'https://appveyor/job/1' });
     const argv = {};
 
     expect.assertions(1);

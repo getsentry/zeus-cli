@@ -3,7 +3,7 @@
 /* eslint-env jest */
 /* eslint-disable global-require */
 
-const getEnv = require('../environment');
+const getEnv = require('../environment').getEnvironment;
 
 // Note that these tests are mostly useless as they duplicate the code in
 // `src/environments/`. However, we keep them here for now, so that people
@@ -35,6 +35,7 @@ describe('environment', () => {
       TRAVIS_BUILD_ID: '12345',
       TRAVIS_JOB_ID: '54321',
       TRAVIS_COMMIT: '10a4cbdce931233f55e20cf09538977123d00000',
+      TRAVIS_REPO_SLUG: 'getsentry/zeus-cli',
     };
 
     expect(getEnv()).toEqual({
@@ -42,6 +43,7 @@ describe('environment', () => {
       buildId: '12345',
       jobId: '54321',
       commitId: '10a4cbdce931233f55e20cf09538977123d00000',
+      url: 'https://travis-ci.org/getsentry/zeus-cli/jobs/54321',
     });
   });
 
@@ -76,6 +78,7 @@ describe('environment', () => {
       BUILDKITE_BUILD_ID: '9e08ef3c-d6e6-4a86-91dd-577ce5205b8e',
       BUILDKITE_JOB_ID: 'e44f9784-e20e-4b93-a21d-f41fd5869db9',
       BUILDKITE_COMMIT: '10a4cbdce931233f55e20cf09538977123d00000',
+      BUILDKITE_BUILD_URL: 'https://buildkite/org/proj/builds/1514',
     };
 
     expect(getEnv()).toEqual({
@@ -83,6 +86,7 @@ describe('environment', () => {
       buildId: '9e08ef3c-d6e6-4a86-91dd-577ce5205b8e',
       jobId: 'e44f9784-e20e-4b93-a21d-f41fd5869db9',
       commitId: '10a4cbdce931233f55e20cf09538977123d00000',
+      url: 'https://buildkite/org/proj/builds/1514',
     });
   });
 });
