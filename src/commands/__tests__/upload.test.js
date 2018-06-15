@@ -6,25 +6,24 @@ const fs = require('fs');
 const command = require('../upload');
 const environment = require('../../environment');
 const logger = require('../../logger');
-const Zeus = require('../../sdk');
+const Zeus = require('@zeus-ci/sdk');
 
 jest.mock('fs');
 jest.mock('../../environment');
 jest.mock('../../logger');
-jest.mock('../../sdk/client');
 
 describe('upload command', () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
     fs.existsSync.mockImplementation(name => /existing.*\.json/.test(name));
-
     Zeus.instance.uploadArtifact.mockImplementation(() =>
       Promise.resolve({
         id: '9f32e479-0382-43c3-a18e-d35de81c58dc',
         download_url: '/artifacts/9f32e479/download',
       })
     );
+    console.log(Zeus);
   });
 
   test('uploads the artifact', () => {

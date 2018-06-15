@@ -3,7 +3,9 @@
 const fs = require('fs');
 const env = require('../environment');
 const logger = require('../logger');
-const Zeus = require('../sdk');
+const zeusSdk = require('@zeus-ci/sdk');
+
+const Zeus = zeusSdk.Client;
 
 module.exports = {
   command: ['upload <file...>', 'u'],

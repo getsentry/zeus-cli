@@ -2,7 +2,9 @@
 
 const getEnv = require('../../environment').getEnvironment;
 const logger = require('../../logger');
-const Zeus = require('../../sdk');
+const zeusSdk = require('@zeus-ci/sdk');
+
+const Zeus = zeusSdk.Client;
 
 module.exports = {
   command: ['update', 'u'],

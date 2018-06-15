@@ -5,22 +5,20 @@
 const commandUpdate = require('../job_cmds/update');
 const getEnv = require('../../environment').getEnvironment;
 const logger = require('../../logger');
-const Zeus = require('../../sdk');
+const Zeus = require('@zeus-ci/sdk');
 
 jest.mock('../../environment');
 jest.mock('../../logger');
-jest.mock('../../sdk/client');
+// jest.mock('../../sdk/client');
 
 describe('job add command', () => {
   let func;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    Zeus.instance.createOrUpdateBuild = jest.fn();
     Zeus.instance.createOrUpdateBuild.mockImplementation(() =>
       Promise.resolve({})
     );
-    Zeus.instance.createOrUpdateJob = jest.fn();
     Zeus.instance.createOrUpdateJob.mockImplementation(() =>
       Promise.resolve({})
     );
