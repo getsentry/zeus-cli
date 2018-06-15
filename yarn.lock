@@ -16,13 +16,13 @@
     esutils "^2.0.2"
     js-tokens "^3.0.0"
 
-"@zeus-ci/sdk@https://github.com/getsentry/zeus-sdk/":
-  version "0.1.0"
-  resolved "https://github.com/getsentry/zeus-sdk/#aa6aeba3a7f8f429da63266019773bf20fe07c8a"
+"@zeus-ci/sdk@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@zeus-ci/sdk/-/sdk-0.1.1.tgz#17f02d6fd441ff52316feb730fb089883ac151a7"
   dependencies:
     form-data "^2.3.2"
     node-fetch "^2.1.2"
-    whatwg-url "^6.5.0"
+    whatwg-url "^5.0.0"
 
 abab@^1.0.4:
   version "1.0.4"
@@ -3787,14 +3787,6 @@ whatwg-url@^5.0.0:
 whatwg-url@^6.4.0, whatwg-url@^6.4.1:
   version "6.4.1"
   resolved "https://registry.yarnpkg.com/whatwg-url/-/whatwg-url-6.4.1.tgz#fdb94b440fd4ad836202c16e9737d511f012fd67"
-  dependencies:
-    lodash.sortby "^4.7.0"
-    tr46 "^1.0.1"
-    webidl-conversions "^4.0.2"
-
-whatwg-url@^6.5.0:
-  version "6.5.0"
-  resolved "https://registry.yarnpkg.com/whatwg-url/-/whatwg-url-6.5.0.tgz#f2df02bff176fd65070df74ad5ccbb5a199965a8"
   dependencies:
     lodash.sortby "^4.7.0"
     tr46 "^1.0.1"
