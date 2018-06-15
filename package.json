@@ -21,7 +21,7 @@
     "test:watch": "jest --watch --notify"
   },
   "dependencies": {
-    "@zeus-ci/sdk": "../zeus-sdk/",
+    "@zeus-ci/sdk": "https://github.com/getsentry/zeus-sdk/",
     "dotenv": "^5.0.1",
     "form-data": "^2.3.2",
     "node-fetch": "^2.1.2",

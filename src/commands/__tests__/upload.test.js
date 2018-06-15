@@ -23,7 +23,6 @@ describe('upload command', () => {
         download_url: '/artifacts/9f32e479/download',
       })
     );
-    console.log(Zeus);
   });
 
   test('uploads the artifact', () => {

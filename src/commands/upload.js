@@ -53,8 +53,9 @@ module.exports = {
 
       return promise
         .then(result => {
+          const artifactUrl = zeus.transport.getUrl(result.download_url);
           logger.info('Artifact upload completed');
-          logger.info(`URL: ${zeus.getUrl(result.download_url)}`);
+          logger.info(`URL: ${artifactUrl}`);
         })
         .catch(e => {
           logger.error(`Artifact upload failed: ${e.message}`);

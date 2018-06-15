@@ -35,7 +35,7 @@ module.exports = {
       .option('status', {
         description: 'Job execution status',
         type: 'string',
-        choices: Object.values(Zeus.JOB_STATUSES),
+        choices: Object.values(zeusSdk.JobStatus),
         alias: 's',
       }),
 

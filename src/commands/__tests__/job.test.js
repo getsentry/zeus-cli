@@ -9,7 +9,6 @@ const Zeus = require('@zeus-ci/sdk');
 
 jest.mock('../../environment');
 jest.mock('../../logger');
-// jest.mock('../../sdk/client');
 
 describe('job add command', () => {
   let func;
