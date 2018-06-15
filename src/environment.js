@@ -24,4 +24,6 @@ function getEnvironment() {
   return environment || {};
 }
 
-module.exports = getEnvironment();
+module.exports = {
+  getEnvironment,
+};
