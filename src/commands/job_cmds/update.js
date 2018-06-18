@@ -2,9 +2,7 @@
 
 const getEnv = require('../../environment').getEnvironment;
 const logger = require('../../logger');
-const zeusSdk = require('@zeus-ci/sdk');
-
-const Zeus = zeusSdk.Client;
+const zeus = require('@zeus-ci/sdk');
 
 module.exports = {
   command: ['update', 'u'],
@@ -35,12 +33,16 @@ module.exports = {
       .option('status', {
         description: 'Job execution status',
         type: 'string',
-        choices: Object.values(zeusSdk.JobStatus),
+        choices: Object.values(zeus.JobStatus),
         alias: 's',
       }),
 
   handler: argv => {
-    const zeus = new Zeus({ url: argv.url, token: argv.token, logger });
+    const client = new zeus.Client({
+      url: argv.url,
+      token: argv.token,
+      logger,
+    });
     const env = getEnv();
 
     const params = {
@@ -53,9 +55,9 @@ module.exports = {
       status: argv.status,
     };
 
-    return zeus
+    return client
       .createOrUpdateBuild(params)
-      .then(() => zeus.createOrUpdateJob(params))
+      .then(() => client.createOrUpdateJob(params))
       .then(() => {
         logger.info('Job updated');
       })

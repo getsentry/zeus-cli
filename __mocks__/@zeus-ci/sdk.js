@@ -3,7 +3,7 @@
 /* eslint-env jest */
 
 const instance = {
-  transport: { getUrl: path => `https://zeus.ci${path}` },
+  getUrl: path => `https://zeus.ci${path}`,
   uploadArtifact: jest.fn(),
   request: jest.fn(),
   createOrUpdateBuild: jest.fn(),
