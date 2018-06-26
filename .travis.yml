@@ -14,15 +14,19 @@ node_js:
   - "6"
   - "4"
 
+if: tag IS blank
+install: yarn --ignore-engines
+script:
+  - yarn test
+  - yarn start --help
+
 matrix:
   include:
     - script: npm pack
+      env: NAME='npm pack'
       after_success:
         - npm install -g @zeus-ci/cli
         - zeus upload -t "application/tar+npm" *.tgz
-
-if: tag IS blank
-install: yarn --ignore-engines
 
 notifications:
   webhooks:
