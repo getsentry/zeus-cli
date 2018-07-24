@@ -4,7 +4,7 @@
 
 const fs = require('fs');
 const command = require('../upload');
-const environment = require('../../environment');
+const getEnv = require('../../environment').getEnvironment;
 const logger = require('../../logger');
 const Zeus = require('@zeus-ci/sdk');
 
@@ -72,7 +72,7 @@ describe('upload command', () => {
   });
 
   test('uses the build ID from the environment', () => {
-    environment.buildId = '12345';
+    getEnv.mockReturnValue({ buildId: '12345' });
     const argv = {
       file: ['existing.json'],
       job: '54321',
@@ -86,7 +86,8 @@ describe('upload command', () => {
   });
 
   test('uses the job ID from the environment', () => {
-    environment.jobId = '54321';
+    getEnv.mockReturnValue({ jobId: '54321' });
+
     const argv = {
       file: ['existing.json'],
       build: '12345',

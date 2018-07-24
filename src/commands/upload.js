@@ -1,7 +1,7 @@
 'use strict';
 
 const fs = require('fs');
-const env = require('../environment');
+const getEnv = require('../environment').getEnvironment;
 const logger = require('../logger');
 const zeus = require('@zeus-ci/sdk');
 
@@ -42,6 +42,7 @@ module.exports = {
       token: argv.token,
       logger,
     });
+    const env = getEnv();
     const uploads = argv.file.map(file => {
       const promise = !fs.existsSync(file)
         ? Promise.reject(new Error(`File does not exist: ${file}`))
