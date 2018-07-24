@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.1
+
+* Additional goodies for AppVeyor
+
 ## v0.5.0
 
 * Add "job update" command to manipulate build jobs (#6)
