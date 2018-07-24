@@ -1,0 +1,7 @@
+---
+github:
+  owner: getsentry
+  repo: zeus-cli
+targets:
+  - name: github
+  - name: npm
