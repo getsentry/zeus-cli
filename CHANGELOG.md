@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.2
+
+* Automatically retry artifact uploads in case of failures (#10)
+
 ## 0.5.1
 
 * Additional goodies for AppVeyor

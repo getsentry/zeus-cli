@@ -6,6 +6,7 @@ const fs = require('fs');
 const command = require('../upload');
 const getEnv = require('../../environment').getEnvironment;
 const logger = require('../../logger');
+const constants = require('../../constants');
 const Zeus = require('@zeus-ci/sdk');
 
 jest.mock('fs');
@@ -117,9 +118,6 @@ describe('upload command', () => {
   test('logs an error for missing files', () => {
     const argv = {
       file: ['invalid.json'],
-      build: '12345',
-      job: '54321',
-      type: 'application/json',
     };
 
     expect.assertions(1);
@@ -131,9 +129,6 @@ describe('upload command', () => {
   test('logs errors from the SDK', () => {
     const argv = {
       file: ['existing.json'],
-      build: '12345',
-      job: '54321',
-      type: 'application/json',
     };
 
     Zeus.instance.uploadArtifact.mockImplementation(() =>
@@ -144,6 +139,35 @@ describe('upload command', () => {
     return command.handler(argv).then(() => {
       expect(logger).toHaveBeenCalledWith(
         expect.stringMatching(/expected failure/)
+      );
+    });
+  });
+
+  test('retries to upload in case of failures', () => {
+    const argv = {
+      file: ['existing.json'],
+    };
+
+    Zeus.instance.uploadArtifact
+      .mockImplementationOnce(() =>
+        Promise.reject(new Error('502 Bad Gateway'))
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          id: '9f32e479-0382-43c3-a18e-d35de81c58dc',
+          download_url: '/artifacts/9f32e479/download',
+        })
+      );
+
+    constants.UPLOAD_RETRY_TIMEOUT = 100;
+
+    expect.assertions(2);
+    return command.handler(argv).then(() => {
+      expect(logger).toHaveBeenCalledWith(
+        expect.stringMatching(/502 Bad Gateway/)
+      );
+      expect(logger).toHaveBeenCalledWith(
+        expect.stringMatching(/Artifact upload completed/)
       );
     });
   });
