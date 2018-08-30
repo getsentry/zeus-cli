@@ -2,6 +2,7 @@
 github:
   owner: getsentry
   repo: zeus-cli
+changelogPolicy: simple
 targets:
-  - name: github
   - name: npm
+  - name: github

@@ -25,6 +25,7 @@
     "dotenv": "^5.0.1",
     "form-data": "^2.3.2",
     "node-fetch": "^2.1.2",
+    "promise-retry": "^1.1.1",
     "require-directory": "^2.1.1",
     "whatwg-url": "^5.0.0",
     "winston": "^2.4.2",
@@ -43,5 +44,8 @@
   "engineStrict": true,
   "engines": {
     "node": ">=4.5.0"
+  },
+  "yargs": {
+    "boolean-negation": false
   }
 }
