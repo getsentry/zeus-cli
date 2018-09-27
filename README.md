@@ -27,7 +27,7 @@ The CLI comes as NPM package and can be installed via npm or yarn:
 
 ```bash
 npm install -g @zeus-ci/cli
-yarn add -g @zeus-ci/cli
+yarn global add @zeus-ci/cli
 ```
 
 ## Usage
