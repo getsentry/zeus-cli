@@ -16,9 +16,10 @@
     esutils "^2.0.2"
     js-tokens "^3.0.0"
 
-"@zeus-ci/sdk@^0.1.4":
+"@zeus-ci/sdk@0.1.4":
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/@zeus-ci/sdk/-/sdk-0.1.4.tgz#da99d864be134d847b2826ef5e507083ee721564"
+  integrity sha512-tFnYV+8rp5wS1pskqqBzBIKFw3bKg81/VAba3JyT0zon7BKuJ9IVVI9BcUNjvBLFqqOBq/sCP2wbWBCrx/Svlw==
   dependencies:
     form-data "^2.3.2"
     node-fetch "^2.1.2"
