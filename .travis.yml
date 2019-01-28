@@ -13,7 +13,6 @@ node_js:
   - "node"
   - "8"
   - "6"
-  - "4"
 
 if: tag IS blank
 install: yarn --ignore-engines
