@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.3
+
+* Pin zeus-sdk version to avoid yarn/npm installation issues
+
 ## 0.5.2
 
 * Automatically retry artifact uploads in case of failures (#10)
