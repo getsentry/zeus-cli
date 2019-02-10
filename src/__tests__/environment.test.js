@@ -89,4 +89,22 @@ describe('environment', () => {
       url: 'https://buildkite/org/proj/builds/1514',
     });
   });
+
+  test('detects circleci', () => {
+    process.env = {
+      CIRCLECI: 'true',
+      CIRCLE_WORKFLOW_ID: '921f49b4-47f2-4b3f-b19e-a65ac1998cca',
+      CIRCLE_BUILD_NUM: '7638',
+      CIRCLE_SHA1: 'f5e9fa82c95e22538071632bacc8fee5221c70d3',
+      CIRCLE_BUILD_URL: 'https://circleci.com/gh/sentry/zeus-cli/7638',
+    };
+
+    expect(getEnv()).toEqual({
+      id: 'circleci',
+      buildId: '921f49b4-47f2-4b3f-b19e-a65ac1998cca',
+      jobId: '7638',
+      commitId: 'f5e9fa82c95e22538071632bacc8fee5221c70d3',
+      url: 'https://circleci.com/gh/sentry/zeus-cli/7638',
+    });
+  });
 });
