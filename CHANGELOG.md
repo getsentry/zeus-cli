@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.4
+
+* Add support for CircleCI environment (#12)
+* Add support for Azure Pipelines environment (#14)
+
 ## 0.5.3
 
 * Pin zeus-sdk version to avoid yarn/npm installation issues
