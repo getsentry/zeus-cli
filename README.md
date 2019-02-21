@@ -74,12 +74,13 @@ ZEUS_TOKEN=zeus-u-xxxxxxxx
 
 In some environments, the CLI is able to infer parameters like build or job
 numbers and commit hashes for you. In this case, you can omit the respective
-paramters. These systems are:
+parameters. These systems are:
 
 - Travis CI
 - AppVeyor
 - Buildkite
 - CircleCI
+- Microsoft Azure Pipelines
 
 ### Updating Jobs
 
