@@ -109,4 +109,27 @@ describe('environment', () => {
       url: 'https://circleci.com/gh/sentry/zeus-cli/7638',
     });
   });
+
+  test('detects Azure Pipelines', () => {
+    process.env = {
+      BUILD_BUILDID: '234',
+      BUILD_SOURCEVERSION: 'f5e9fa82c95e22538071632bacc8fee5221c70d4',
+      SYSTEM_COLLECTIONURI: 'https://dev.azure.com/getsentry-org/',
+      SYSTEM_JOBID: '5e150a1c-80ac-55fc-fd7f-bc9ff135ed9c',
+      SYSTEM_PHASEDISPLAYNAME: 'Job On Azure',
+      SYSTEM_TEAMPROJECT: 'getsentry-proj',
+      SYSTEM_TEAMPROJECTID: '492946e1-7d64-490e-9cc1-b9c1b94367fd',
+      TF_BUILD: 'True',
+    };
+
+    expect(getEnv()).toEqual({
+      id: 'azurePipelines',
+      buildId: '492946e1-7d64-490e-9cc1-b9c1b94367fd__234',
+      jobId: '5e150a1c-80ac-55fc-fd7f-bc9ff135ed9c',
+      jobLabel: 'Job On Azure',
+      commitId: 'f5e9fa82c95e22538071632bacc8fee5221c70d4',
+      url:
+        'https://dev.azure.com/getsentry-org/getsentry-proj/_build/results?buildId=234',
+    });
+  });
 });
