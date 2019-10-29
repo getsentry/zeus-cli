@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.5
+
+* Update zeus-sdk to fix the 403 error after Zeus update (#15)
+
 ## 0.5.4
 
 * Add support for CircleCI environment (#12)
