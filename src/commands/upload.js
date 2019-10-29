@@ -119,9 +119,13 @@ module.exports = {
 
       return promise
         .then(result => {
-          const artifactUrl = client.getUrl(result.download_url);
-          logger.info('Artifact upload completed');
-          logger.info(`URL: ${artifactUrl}`);
+          if (result && result.download_url) {
+            const artifactUrl = client.getUrl(result.download_url);
+            logger.info('Artifact upload completed');
+            logger.info(`URL: ${artifactUrl}`);
+          } else {
+            throw new Error(`Got invalid result: ${result}`);
+          }
         })
         .catch(e => {
           logger.error(`Artifact upload failed: ${e.message}`);
