@@ -124,7 +124,7 @@ module.exports = {
             logger.info('Artifact upload completed');
             logger.info(`URL: ${artifactUrl}`);
           } else {
-            throw new Error(`Got invalid result: ${result}`);
+            throw new Error(`Got invalid result: ${JSON.stringify(result)}`);
           }
         })
         .catch(e => {
