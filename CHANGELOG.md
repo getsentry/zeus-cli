@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.6
+
+* Fix error message for upload command
+
 ## 0.5.5
 
 * Update zeus-sdk to fix the 403 error after Zeus update (#15)
