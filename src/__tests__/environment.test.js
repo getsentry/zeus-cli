@@ -132,4 +132,22 @@ describe('environment', () => {
         'https://dev.azure.com/getsentry-org/getsentry-proj/_build/results?buildId=234',
     });
   });
+
+  test('detects github', () => {
+    process.env = {
+      GITHUB_ACTIONS: 'true',
+      GITHUB_ACTION: '77158877',
+      GITHUB_RUN_ID: '582643943',
+      GITHUB_SHA: '10a4cbdce931233f55e20cf09538977123d00000',
+      GITHUB_REPOSITORY: 'getsentry/zeus-cli',
+    };
+
+    expect(getEnv()).toEqual({
+      id: 'github',
+      buildId: '77158877',
+      jobId: '582643943',
+      commitId: '10a4cbdce931233f55e20cf09538977123d00000',
+      url: 'https://github.com/getsentry/zeus-cli/runs/582643943',
+    });
+  });
 });
